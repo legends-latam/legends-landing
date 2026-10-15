@@ -1,0 +1,29 @@
+{
+  "name": "legends-landing",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Landing de Legends (legendslatam.com): React prerenderizado a HTML estático para GitHub Pages.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && vite build --ssr src/entry-server.tsx --outDir dist/server && node prerender.mjs",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "predeploy": "npm run build",
+    "deploy-legends": "npm run predeploy && gh-pages -d dist -t",
+    "images": "node scripts/images.mjs"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^4.4.0",
+    "gh-pages": "^6.3.0",
+    "sharp": "^0.35.5",
+    "typescript": "^5.8.0",
+    "vite": "^6.3.0"
+  }
+}

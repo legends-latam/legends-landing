@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://legendslatam.com/</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image><image:loc>https://legendslatam.com/og-image.png</image:loc><image:title>Legends · Tu Coach AI Personal para Dota 2</image:title></image:image>
+    <image:image><image:loc>https://legendslatam.com/assets/shot-coach.webp</image:loc><image:title>Modo Coach de Legends</image:title></image:image>
+    <image:image><image:loc>https://legendslatam.com/assets/shot-wards.webp</image:loc><image:title>Diagnóstico por rol en Legends</image:title></image:image>
+  </url>
+  <url>
+    <loc>https://legendslatam.com/descargar/</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>

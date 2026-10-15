@@ -1,0 +1,16 @@
+{
+  "name": "Legends · Tu Coach AI Personal para Dota 2",
+  "short_name": "Legends",
+  "description": "Coach AI gratis para Dota 2: analiza tus replays, detecta tus brechas y arma tu ruta de entrenamiento semanal.",
+  "lang": "es",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#0C0E11",
+  "theme_color": "#0C0E11",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

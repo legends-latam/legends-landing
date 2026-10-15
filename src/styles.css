@@ -1,0 +1,153 @@
+/* Estilos globales de la landing, copiados de static/index.html.
+   La clase `js` la pone <html> con un script inline antes de pintar (ver index.html):
+   sin JavaScript todo el contenido queda visible. */
+body{margin:0;background:#0C0E11}
+a{color:#C9CED6;text-decoration:none}a:hover{color:#6EF21C}
+.lp,.lp *{box-sizing:border-box}
+.lp{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;scroll-behavior:smooth}
+.lp img{max-width:100%}
+.lp button{font-family:inherit}
+.lp :focus-visible{outline:3px solid #52E000;outline-offset:3px}
+@keyframes ccRise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes ccFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes ndPulse{0%,100%{box-shadow:0 0 0 0 rgba(82,224,0,.5)}70%{box-shadow:0 0 0 16px rgba(82,224,0,0)}}
+@keyframes mq{to{transform:translateX(-50%)}}
+@keyframes xpFloat{0%{opacity:0;transform:translateY(6px)}25%{opacity:1}100%{opacity:0;transform:translateY(-30px)}}
+@keyframes stepBar{from{width:0}to{width:100%}}
+@keyframes wPop{from{opacity:0;transform:scale(.94) translateY(8px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes hint{0%{transform:translateY(-4px);opacity:0}35%{opacity:1}100%{transform:translateY(10px);opacity:0}}
+@keyframes glow{0%,100%{opacity:.55}50%{opacity:1}}
+html.js .lp .rise{animation:ccRise .55s cubic-bezier(.2,.7,.3,1) both;animation-delay:var(--d,0s)}
+/* El titular (elemento LCP) entra solo con desplazamiento: si arranca en opacidad 0, Chrome no lo cuenta como LCP y la métrica se dispara. */
+@keyframes ccRiseSolid{from{transform:translateY(16px)}to{transform:none}}
+html.js .lp .h1.rise{animation-name:ccRiseSolid;animation-delay:0s}
+html.js .lp .rv{opacity:0;transform:translateY(24px);transition:opacity .65s cubic-bezier(.2,.7,.3,1),transform .65s cubic-bezier(.2,.7,.3,1);transition-delay:var(--d,0s)}
+html.js .lp .rv.in{opacity:1;transform:none}
+html.js .lp .rv-x{opacity:0;transform:translateX(36px);transition:opacity .75s cubic-bezier(.2,.7,.3,1),transform .75s cubic-bezier(.2,.7,.3,1);transition-delay:var(--d,0s)}
+html.js .lp .rv-x.in{opacity:1;transform:none}
+.float{animation:ccFloat 3.6s ease-in-out infinite;animation-delay:var(--fd,0s)}
+.pulse{animation:ndPulse 2.2s ease-out infinite}
+.blink{animation:blink 1.6s ease-in-out infinite}
+.glowy{animation:glow 3.2s ease-in-out infinite}
+.mq-track{animation:mq 30s linear infinite}
+.scene{transform:perspective(1500px) rotateY(calc(-8deg + var(--mx) * 5deg)) rotateX(calc(3deg + var(--my) * -4deg));transform-style:preserve-3d;transition:transform .2s ease-out}
+.px1{transform:translate3d(calc(var(--mx) * -12px),calc(var(--my) * -8px),70px)}
+.px2{transform:translate3d(calc(var(--mx) * 16px),calc(var(--my) * 10px),50px)}
+.px3{transform:translate3d(calc(var(--mx) * -8px),calc(var(--my) * 6px),90px)}
+.px4{transform:translate3d(calc(var(--mx) * 10px),calc(var(--my) * -6px),40px)}
+.role{position:absolute;left:0;top:0;opacity:0;transform:translateY(.45em);transition:opacity .45s,transform .5s cubic-bezier(.2,.7,.3,1);white-space:nowrap}
+.role.on{opacity:1;transform:none}
+.step{transition:border-color .25s,background .25s,transform .25s}
+.step .bar{width:0}
+.step.on{border-color:rgba(82,224,0,.6)!important;background:#161C22!important}
+.step.on .num{background:#52E000!important;color:#0C0E11!important;box-shadow:0 0 18px rgba(82,224,0,.45)}
+.step:hover{transform:translateX(3px)}
+html.js .lp .step.on .bar{animation:stepBar 5.2s linear forwards}
+.shot{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;object-position:50% 0;opacity:0;transform:scale(1.03);transition:opacity .6s ease,transform .6s ease}
+.shot.on{opacity:1;transform:none;transition:opacity .6s ease,transform 5.2s linear}
+.gauge .val{stroke-dashoffset:var(--off)}
+html.js .lp .gauge .val{stroke-dashoffset:169.6;transition:stroke-dashoffset 1.4s cubic-bezier(.2,.7,.3,1) .3s}
+html.js .lp .rv.in .gauge .val{stroke-dashoffset:var(--off)}
+.fill{width:var(--w)}
+html.js .lp .fill{width:0;transition:width 1.4s cubic-bezier(.2,.7,.3,1);transition-delay:var(--fd,.2s)}
+html.js .lp .rv.in .fill{width:var(--w)}
+html.js .lp .in .wpop{animation:wPop .5s cubic-bezier(.2,.7,.3,1) both;animation-delay:var(--d,0s)}
+.xpf{animation:xpFloat 1.6s ease-out forwards}
+.btn-p{transition:background .2s,transform .2s,box-shadow .2s}
+.btn-p:hover{background:#6EF21C!important;transform:translateY(-1px);box-shadow:0 10px 28px rgba(82,224,0,.3)}
+.card{transition:transform .28s cubic-bezier(.2,.7,.3,1),border-color .28s,box-shadow .28s}
+.card:hover{transform:translateY(-4px);border-color:rgba(82,224,0,.5)!important;box-shadow:0 22px 50px rgba(0,0,0,.45)}
+.chip{transition:transform .2s,border-color .2s}
+.chip:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.45)!important}
+.tile{transition:transform .28s,border-color .28s}
+.tile:hover{transform:translateY(-3px)}
+.faq{transition:border-color .25s,background .25s}
+.faq .ans{max-height:0;overflow:hidden;opacity:0;transition:max-height .45s cubic-bezier(.2,.7,.3,1),opacity .3s}
+.faq.open{border-color:rgba(82,224,0,.55)!important;background:#161C22!important}
+.faq.open .ans{max-height:440px;opacity:1}
+.faq .chev{transition:transform .3s,color .2s}
+.faq.open .chev{transform:rotate(180deg);color:#52E000!important}
+.faq .q:hover{color:#6EF21C!important}
+@keyframes eqb{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+.snd{transition:border-color .2s,color .2s,background .2s}
+.snd:hover{border-color:rgba(82,224,0,.6)!important;color:#6EF21C!important}
+.snd .eq span{transform-origin:50% 100%;transform:scaleY(.3)}
+.snd.on{border-color:rgba(82,224,0,.6)!important;color:#52E000!important;box-shadow:0 0 16px rgba(82,224,0,.2)}
+.snd.on .eq span{animation:eqb .7s ease-in-out infinite alternate}
+.snd.on .eq span:nth-child(2){animation-delay:.18s}
+.snd.on .eq span:nth-child(3){animation-delay:.36s}
+.snd.on .eq span:nth-child(4){animation-delay:.09s}
+.lp .para{transform:translateY(calc(var(--sy) * -0.06px))}
+.lp .parb{transform:translateY(calc(var(--sy) * 0.08px))}
+@container (max-width:1120px){
+  .hero-grid{grid-template-columns:1fr!important;gap:44px!important}
+  .hero-scene{height:520px!important}
+  .h1{font-size:62px!important}
+  .grid4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .grid6{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .cols2,.cols3,.cta-grid,.faq-grid{grid-template-columns:1fr!important}
+  .sec-head{grid-template-columns:1fr!important}
+  .w-hero-tr{top:auto!important;bottom:0!important;width:58%!important;height:420px!important;clip-path:polygon(100% 0,100% 100%,0 100%)!important}
+  .w-ruta{top:auto!important;bottom:0!important;width:100%!important;height:460px!important;clip-path:polygon(0 34%,100% 0,100% 100%,0 100%)!important}
+  .w-res{display:none!important}
+  .w-cta{width:100%!important;height:40%!important;clip-path:polygon(0 0,100% 0,100% 40%,0 100%)!important}
+}
+@container (max-width:720px){
+  .sec{padding:28px 18px!important}
+  .hero{padding:24px 18px 36px!important;min-height:0!important}
+  .navin{padding:10px 16px!important}
+  .nav-pill{display:none!important}
+  .h1{font-size:44px!important;letter-spacing:-1px!important}
+  .h2{font-size:28px!important}
+  .h3{font-size:22px!important}
+  .lead{font-size:14.5px!important}
+  .big{font-size:64px!important}
+  .hero-scene{height:340px!important}
+  .hero-chips,.hint,.steps-strip,.sc-chat,.cta-chips,.w-hero-tl,.w-prob-tl,.w-cta-br,.snd-label{display:none!important}
+  .sc-badge{width:96px!important;padding:10px 12px!important}
+  .sc-badge .n{font-size:36px!important}
+  .sc-watata{height:180px!important;right:-4%!important}
+  .sc-toast{width:52%!important}
+  .grid4{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  .grid6{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}
+  .stat{padding:14px 10px!important}
+  .sl,.pain4,.auto-chips,.share,.faq-lead,.trust-chips,.oferta-lead,.how-lead,.nav-sub,.nav-long{display:none!important}
+  .cta-main{padding:16px 18px!important;font-size:12.5px!important;letter-spacing:1.4px!important}
+  .chatp{grid-template-columns:1fr!important}
+  .chat-img,.wq{display:none!important}
+  .cmp-col{padding:12px!important;gap:8px!important}
+  .cmp-row{padding:10px!important}
+  .faq .q{padding:12px 14px!important;font-size:14px!important}
+  .card{padding:14px!important;min-height:0!important;gap:10px!important}
+  .ico{width:36px!important;height:36px!important}
+  .ctitle{font-size:12px!important}
+  .cbody{display:none!important}
+  .stat .n{font-size:26px!important}
+  .step{padding:12px 14px!important;gap:10px!important;grid-template-columns:32px 1fr!important}
+  .step .num{width:32px!important;height:32px!important;font-size:12px!important}
+  .step .sbody{font-size:12px!important}
+  .steps-screen{aspect-ratio:16/10!important}
+  .cols3{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .res-main{grid-column:1 / -1!important}
+  .ph{font-size:34px!important;letter-spacing:-1px!important}
+  .cta-text{padding:30px 22px!important}
+  .cta-art{min-height:218px!important}
+  .cta-watata{height:180px!important}
+  .gauge{width:calc(50% - 11px)!important}
+  .vis{min-height:310px!important}
+  .scoretile .n{font-size:40px!important}
+  .w-hero-tr{height:300px!important}
+  .w-ruta{height:380px!important}
+  .foot{flex-direction:column!important;align-items:flex-start!important}
+  .social{gap:6px!important}
+  .faq .q{padding:11px 14px!important}
+}
+@container (max-width:400px){
+  .cta-main{white-space:normal!important;text-align:center!important}
+}
+@media (prefers-reduced-motion:reduce){
+  .float,.pulse,.blink,.glowy,.mq-track,.xpf,html.js .lp .rise,html.js .lp .in .wpop,html.js .lp .step.on .bar,.snd.on .eq span{animation:none!important}
+  html.js .lp .rv,html.js .lp .rv-x{opacity:1;transform:none;transition:none}
+  .scene,.px1,.px2,.px3,.px4,.lp .para,.lp .parb{transform:none!important;transition:none!important}
+}

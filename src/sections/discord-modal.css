@@ -1,0 +1,60 @@
+/* Modal de Discord · Legends Beta (CTA de descarga de la landing). Prefijo .dcm, independiente de .lp. */
+html:has(.dcm[open]){overflow:hidden}
+.dcm,.dcm *{box-sizing:border-box}
+.dcm{width:min(560px,calc(100% - 32px));max-width:none;max-height:calc(100% - 32px);margin:auto;padding:0;border:0;background:transparent;color:#FFFFFF;overflow:auto;overscroll-behavior:contain;font-family:'Archivo',system-ui,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.dcm::backdrop{background:rgba(5,7,9,.74);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.dcm :focus-visible{outline:3px solid #52E000;outline-offset:3px}
+.dcm-panel{position:relative;background:#13171B;border:1px solid rgba(82,224,0,.5);border-radius:18px;overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.6)}
+
+/* Banda superior: diagonales + Watata (sin texto sobre el verde: la burbuja y el botón son opacos) */
+.dcm-art{position:relative;height:136px;background:#0C0E11;border-bottom:1px solid rgba(255,255,255,.08);overflow:hidden}
+.dcm-tri-tl{position:absolute;left:0;top:0;width:34%;height:100%;background:#181C20;clip-path:polygon(0 0,100% 0,0 100%)}
+.dcm-tri{position:absolute;right:0;top:0;width:50%;height:100%;background:#52E000;clip-path:polygon(30% 0,100% 0,100% 100%)}
+.dcm-glow{position:absolute;right:40px;top:50%;width:240px;height:240px;transform:translateY(-50%);border-radius:999px;background:radial-gradient(circle,rgba(82,224,0,.35) 0%,rgba(82,224,0,0) 70%);pointer-events:none}
+.dcm-bubble{position:absolute;z-index:2;left:24px;top:50%;transform:translateY(-50%);padding:9px 12px;border-radius:12px;background:#13171B;border:1px solid rgba(82,224,0,.5);font-size:10px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:#6EF21C;white-space:nowrap}
+.dcm-watata{position:absolute;z-index:1;right:76px;bottom:-10px;height:146px;width:auto;display:block;filter:drop-shadow(0 16px 24px rgba(0,0,0,.6))}
+.dcm-x{position:absolute;z-index:3;top:12px;right:12px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:#0C0E11;border:1px solid rgba(255,255,255,.15);color:#C9CED6;font-family:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:border-color .2s,color .2s}
+.dcm-x:hover{border-color:rgba(82,224,0,.6);color:#6EF21C}
+
+.dcm-body{padding:26px 28px 24px;display:flex;flex-direction:column;gap:14px}
+.dcm-k{font-size:11px;font-weight:800;letter-spacing:2.4px;text-transform:uppercase;color:#52E000}
+.dcm-h{margin:0;font-size:32px;line-height:1.02;font-weight:900;letter-spacing:-.3px;text-transform:uppercase;color:#FFFFFF}
+.dcm-h span{color:#52E000;text-shadow:0 0 30px rgba(82,224,0,.35)}
+.dcm-p{margin:0;font-size:15px;line-height:1.55;color:#C9CED6}
+.dcm-steps{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.dcm-steps li{display:grid;grid-template-columns:32px 1fr;gap:12px;align-items:center;padding:10px 12px;border-radius:12px;background:#191E24;border:1px solid rgba(255,255,255,.08)}
+.dcm-steps li.on{border-color:rgba(82,224,0,.4)}
+.dcm-n{width:32px;height:32px;border-radius:999px;background:#242B33;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#FFFFFF}
+.dcm-steps li.on .dcm-n{background:#52E000;color:#0C0E11}
+.dcm-steps b{display:block;font-size:12px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:#FFFFFF}
+.dcm-steps small{display:block;margin-top:2px;font-size:12.5px;line-height:1.4;color:#C9CED6}
+.dcm-steps li.on small{color:#6EF21C}
+.dcm-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:4px}
+.dcm .dcm-cta{flex:1;justify-content:center;display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:16px 22px;border-radius:10px;background:#52E000;color:#0C0E11;font-size:13px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;text-decoration:none;white-space:nowrap;box-shadow:0 10px 30px rgba(82,224,0,.25)}
+.dcm .dcm-cta:hover{color:#0C0E11}
+.dcm-later{min-height:52px;padding:0 18px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,.15);color:#C9CED6;font-family:inherit;font-size:11px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;cursor:pointer;transition:border-color .2s,color .2s}
+.dcm-later:hover{border-color:rgba(255,255,255,.45);color:#FFFFFF}
+.dcm-alt{margin:0;font-size:10px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#8C929B}
+
+@keyframes dcmIn{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes dcmFade{from{opacity:0}to{opacity:1}}
+@keyframes dcmPop{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.dcm[open] .dcm-panel{animation:dcmIn .38s cubic-bezier(.2,.7,.3,1) both}
+.dcm[open]::backdrop{animation:dcmFade .3s ease both}
+.dcm[open] .dcm-watata{animation:dcmPop .5s cubic-bezier(.2,.7,.3,1) .12s both}
+
+@media (max-width:520px){
+  .dcm{width:calc(100% - 24px);max-height:calc(100% - 24px)}
+  .dcm-art{height:116px}
+  .dcm-tri{width:60%}
+  .dcm-bubble{left:16px;max-width:176px;white-space:normal;font-size:9px;line-height:1.4}
+  .dcm-watata{right:62px;height:124px;bottom:-8px}
+  .dcm-body{padding:20px 18px 18px;gap:12px}
+  .dcm-h{font-size:25px}
+  .dcm-p{font-size:14px}
+  .dcm .dcm-cta{width:100%;justify-content:center;white-space:normal;text-align:center;padding:14px 16px;font-size:12px;letter-spacing:1.2px}
+  .dcm-later{width:100%;min-height:44px}
+}
+@media (prefers-reduced-motion:reduce){
+  .dcm[open] .dcm-panel,.dcm[open]::backdrop,.dcm[open] .dcm-watata{animation:none}
+}

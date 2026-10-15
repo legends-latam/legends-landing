@@ -1,0 +1,1187 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Legends · Tu Coach AI Personal para Dota 2</title>
+<meta name="description" content="Legends analiza tus replays de Dota 2, encuentra tus 3 brechas y te arma una ruta de entrenamiento semanal para tu rol. Gratis, sin Pay to Win y sin tocar tus FPS.">
+<link rel="icon" href="../assets/legends-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0C0E11}
+a{color:#C9CED6;text-decoration:none}a:hover{color:#6EF21C}
+.lp,.lp *{box-sizing:border-box}
+.lp{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;scroll-behavior:smooth}
+.lp img{max-width:100%}
+.lp button{font-family:inherit}
+.lp :focus-visible{outline:3px solid #52E000;outline-offset:3px}
+@keyframes ccRise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes ccFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes ndPulse{0%,100%{box-shadow:0 0 0 0 rgba(82,224,0,.5)}70%{box-shadow:0 0 0 16px rgba(82,224,0,0)}}
+@keyframes mq{to{transform:translateX(-50%)}}
+@keyframes xpFloat{0%{opacity:0;transform:translateY(6px)}25%{opacity:1}100%{opacity:0;transform:translateY(-30px)}}
+@keyframes stepBar{from{width:0}to{width:100%}}
+@keyframes wPop{from{opacity:0;transform:scale(.94) translateY(8px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes hint{0%{transform:translateY(-4px);opacity:0}35%{opacity:1}100%{transform:translateY(10px);opacity:0}}
+@keyframes glow{0%,100%{opacity:.55}50%{opacity:1}}
+.lp.js .rise{animation:ccRise .55s cubic-bezier(.2,.7,.3,1) both;animation-delay:var(--d,0s)}
+.lp.js .rv{opacity:0;transform:translateY(24px);transition:opacity .65s cubic-bezier(.2,.7,.3,1),transform .65s cubic-bezier(.2,.7,.3,1);transition-delay:var(--d,0s)}
+.lp.js .rv.in{opacity:1;transform:none}
+.lp.js .rv-x{opacity:0;transform:translateX(36px);transition:opacity .75s cubic-bezier(.2,.7,.3,1),transform .75s cubic-bezier(.2,.7,.3,1);transition-delay:var(--d,0s)}
+.lp.js .rv-x.in{opacity:1;transform:none}
+.float{animation:ccFloat 3.6s ease-in-out infinite;animation-delay:var(--fd,0s)}
+.pulse{animation:ndPulse 2.2s ease-out infinite}
+.blink{animation:blink 1.6s ease-in-out infinite}
+.glowy{animation:glow 3.2s ease-in-out infinite}
+.mq-track{animation:mq 30s linear infinite}
+.scene{transform:perspective(1500px) rotateY(calc(-8deg + var(--mx) * 5deg)) rotateX(calc(3deg + var(--my) * -4deg));transform-style:preserve-3d;transition:transform .2s ease-out}
+.px1{transform:translate3d(calc(var(--mx) * -12px),calc(var(--my) * -8px),70px)}
+.px2{transform:translate3d(calc(var(--mx) * 16px),calc(var(--my) * 10px),50px)}
+.px3{transform:translate3d(calc(var(--mx) * -8px),calc(var(--my) * 6px),90px)}
+.px4{transform:translate3d(calc(var(--mx) * 10px),calc(var(--my) * -6px),40px)}
+.role{position:absolute;left:0;top:0;opacity:0;transform:translateY(.45em);transition:opacity .45s,transform .5s cubic-bezier(.2,.7,.3,1);white-space:nowrap}
+.role.on{opacity:1;transform:none}
+.step{transition:border-color .25s,background .25s,transform .25s}
+.step .bar{width:0}
+.step.on{border-color:rgba(82,224,0,.6)!important;background:#161C22!important}
+.step.on .num{background:#52E000!important;color:#0C0E11!important;box-shadow:0 0 18px rgba(82,224,0,.45)}
+.step:hover{transform:translateX(3px)}
+.lp.js .step.on .bar{animation:stepBar 5.2s linear forwards}
+.shot{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;object-position:50% 0;opacity:0;transform:scale(1.03);transition:opacity .6s ease,transform .6s ease}
+.shot.on{opacity:1;transform:none;transition:opacity .6s ease,transform 5.2s linear}
+.gauge .val{stroke-dashoffset:var(--off)}
+.lp.js .gauge .val{stroke-dashoffset:169.6;transition:stroke-dashoffset 1.4s cubic-bezier(.2,.7,.3,1) .3s}
+.lp.js .rv.in .gauge .val{stroke-dashoffset:var(--off)}
+.fill{width:var(--w)}
+.lp.js .fill{width:0;transition:width 1.4s cubic-bezier(.2,.7,.3,1);transition-delay:var(--fd,.2s)}
+.lp.js .rv.in .fill{width:var(--w)}
+.lp.js .in .wpop{animation:wPop .5s cubic-bezier(.2,.7,.3,1) both;animation-delay:var(--d,0s)}
+.xpf{animation:xpFloat 1.6s ease-out forwards}
+.btn-p{transition:background .2s,transform .2s,box-shadow .2s}
+.btn-p:hover{background:#6EF21C!important;transform:translateY(-1px);box-shadow:0 10px 28px rgba(82,224,0,.3)}
+.card{transition:transform .28s cubic-bezier(.2,.7,.3,1),border-color .28s,box-shadow .28s}
+.card:hover{transform:translateY(-4px);border-color:rgba(82,224,0,.5)!important;box-shadow:0 22px 50px rgba(0,0,0,.45)}
+.chip{transition:transform .2s,border-color .2s}
+.chip:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.45)!important}
+.tile{transition:transform .28s,border-color .28s}
+.tile:hover{transform:translateY(-3px)}
+.faq{transition:border-color .25s,background .25s}
+.faq .ans{max-height:0;overflow:hidden;opacity:0;transition:max-height .45s cubic-bezier(.2,.7,.3,1),opacity .3s}
+.faq.open{border-color:rgba(82,224,0,.55)!important;background:#161C22!important}
+.faq.open .ans{max-height:440px;opacity:1}
+.faq .chev{transition:transform .3s,color .2s}
+.faq.open .chev{transform:rotate(180deg);color:#52E000!important}
+.faq .q:hover{color:#6EF21C!important}
+@keyframes eqb{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+.snd{transition:border-color .2s,color .2s,background .2s}
+.snd:hover{border-color:rgba(82,224,0,.6)!important;color:#6EF21C!important}
+.snd .eq span{transform-origin:50% 100%;transform:scaleY(.3)}
+.snd.on{border-color:rgba(82,224,0,.6)!important;color:#52E000!important;box-shadow:0 0 16px rgba(82,224,0,.2)}
+.snd.on .eq span{animation:eqb .7s ease-in-out infinite alternate}
+.snd.on .eq span:nth-child(2){animation-delay:.18s}
+.snd.on .eq span:nth-child(3){animation-delay:.36s}
+.snd.on .eq span:nth-child(4){animation-delay:.09s}
+.lp .para{transform:translateY(calc(var(--sy) * -0.06px))}
+.lp .parb{transform:translateY(calc(var(--sy) * 0.08px))}
+@container (max-width:1120px){
+  .hero-grid{grid-template-columns:1fr!important;gap:44px!important}
+  .hero-scene{height:520px!important}
+  .h1{font-size:62px!important}
+  .grid4{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .grid6{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .cols2,.cols3,.cta-grid,.faq-grid{grid-template-columns:1fr!important}
+  .sec-head{grid-template-columns:1fr!important}
+  .w-hero-tr{top:auto!important;bottom:0!important;width:58%!important;height:420px!important;clip-path:polygon(100% 0,100% 100%,0 100%)!important}
+  .w-ruta{top:auto!important;bottom:0!important;width:100%!important;height:460px!important;clip-path:polygon(0 34%,100% 0,100% 100%,0 100%)!important}
+  .w-res{display:none!important}
+  .w-cta{width:100%!important;height:40%!important;clip-path:polygon(0 0,100% 0,100% 40%,0 100%)!important}
+}
+@container (max-width:720px){
+  .sec{padding:28px 18px!important}
+  .hero{padding:24px 18px 36px!important;min-height:0!important}
+  .navin{padding:10px 16px!important}
+  .nav-pill{display:none!important}
+  .h1{font-size:44px!important;letter-spacing:-1px!important}
+  .h2{font-size:28px!important}
+  .h3{font-size:22px!important}
+  .lead{font-size:14.5px!important}
+  .big{font-size:64px!important}
+  .hero-scene{height:340px!important}
+  .hero-chips,.hint,.steps-strip,.sc-chat,.cta-chips,.w-hero-tl,.w-prob-tl,.w-cta-br,.snd-label{display:none!important}
+  .sc-badge{width:96px!important;padding:10px 12px!important}
+  .sc-badge .n{font-size:36px!important}
+  .sc-watata{height:180px!important;right:-4%!important}
+  .sc-toast{width:52%!important}
+  .grid4{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  .grid6{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}
+  .stat{padding:14px 10px!important}
+  .sl,.pain4,.auto-chips,.share,.faq-lead,.trust-chips,.oferta-lead,.how-lead,.nav-sub,.nav-long{display:none!important}
+  .cta-main{padding:16px 18px!important;font-size:12.5px!important;letter-spacing:1.4px!important}
+  .chatp{grid-template-columns:1fr!important}
+  .chat-img,.wq{display:none!important}
+  .cmp-col{padding:12px!important;gap:8px!important}
+  .cmp-row{padding:10px!important}
+  .faq .q{padding:12px 14px!important;font-size:14px!important}
+  .card{padding:14px!important;min-height:0!important;gap:10px!important}
+  .ico{width:36px!important;height:36px!important}
+  .ctitle{font-size:12px!important}
+  .cbody{display:none!important}
+  .stat .n{font-size:26px!important}
+  .step{padding:12px 14px!important;gap:10px!important;grid-template-columns:32px 1fr!important}
+  .step .num{width:32px!important;height:32px!important;font-size:12px!important}
+  .step .sbody{font-size:12px!important}
+  .steps-screen{aspect-ratio:16/10!important}
+  .cols3{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .res-main{grid-column:1 / -1!important}
+  .ph{font-size:34px!important;letter-spacing:-1px!important}
+  .cta-text{padding:30px 22px!important}
+  .cta-art{min-height:218px!important}
+  .cta-watata{height:180px!important}
+  .gauge{width:calc(50% - 11px)!important}
+  .vis{min-height:310px!important}
+  .scoretile .n{font-size:40px!important}
+  .w-hero-tr{height:300px!important}
+  .w-ruta{height:380px!important}
+  .foot{flex-direction:column!important;align-items:flex-start!important}
+  .social{gap:6px!important}
+  .faq .q{padding:11px 14px!important}
+}
+@media (prefers-reduced-motion:reduce){
+  .float,.pulse,.blink,.glowy,.mq-track,.xpf,.lp.js .rise,.lp.js .in .wpop,.lp.js .step.on .bar,.snd.on .eq span{animation:none!important}
+  .lp.js .rv,.lp.js .rv-x{opacity:1;transform:none;transition:none}
+  .scene,.px1,.px2,.px3,.px4,.lp .para,.lp .parb{transform:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div id="lg" class="lp js" data-dc-class-prefix="lp " data-dc-class="rootCls" style="--mx:0; --my:0; --sy:0; position: relative; width: 100%; background: #0C0E11; color: #FFFFFF; font-family: 'Archivo', system-ui, sans-serif; container-type: inline-size;">
+
+<!-- ===== NAV · solo marca + un CTA (sin menú de navegación) ===== -->
+<header style="position: sticky; top: 0; z-index: 50; background: rgba(12,14,17,.84); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,.08);">
+  <div class="navin" style="width: 100%; max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 14px 40px;">
+    <div style="display: flex; align-items: center; gap: 12px; color: #FFFFFF;">
+      <img src="../assets/legends-logo.png" alt="Legends" style="width: 38px; height: 38px; display: block;">
+      <span style="display: flex; flex-direction: column;"><span style="font-size: 15px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase;">Legends</span><span class="nav-sub" style="font-size: 9px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: #52E000;">Tu Coach AI Personal</span></span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <button type="button" class="snd" data-dc-class="sndCls" data-dc-click="toggleSound" aria-pressed="false" data-dc-attr="aria-pressed:sndOn" aria-label="Activar o silenciar el sonido del sitio" style="display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 8px 13px; border-radius: 999px; background: #0C0E11; border: 1px solid rgba(255,255,255,.15); color: #C9CED6; cursor: pointer; font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase;">
+        <span class="eq" aria-hidden="true" style="display: inline-flex; align-items: flex-end; gap: 2px; height: 14px;"><span style="display: block; width: 3px; height: 14px; background: currentColor; border-radius: 1px;"></span><span style="display: block; width: 3px; height: 14px; background: currentColor; border-radius: 1px;"></span><span style="display: block; width: 3px; height: 14px; background: currentColor; border-radius: 1px;"></span><span style="display: block; width: 3px; height: 14px; background: currentColor; border-radius: 1px;"></span></span>
+        <span class="snd-label"><span data-dc-text="sndLabel">Sonido off</span></span>
+      </button>
+      
+      <a class="btn-p" href="#descargar" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 12px 18px; border-radius: 10px; background: #52E000; color: #0C0E11; font-size: 11px; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; white-space: nowrap;">Descargar<span class="nav-long"> gratis</span> ▸</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== 1 · ABOVE THE FOLD ===== -->
+<section id="top" class="hero sec" style="position: relative; overflow: hidden; min-height: 820px; display: flex; align-items: center; padding: 64px 40px 80px; background: #0C0E11;">
+  <canvas id="lgHeroCanvas" aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; pointer-events: none;"></canvas>
+  <div class="w-hero-tl" aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 34%; height: min(46%, 380px); background: #181C20; clip-path: polygon(0 0, 100% 0, 0 100%); pointer-events: none;"></div>
+  <div class="w-hero-tr" aria-hidden="true" style="position: absolute; right: 0; top: 0; width: 36%; height: min(50%, 420px); background: #52E000; clip-path: polygon(38% 0, 100% 0, 100% 100%); pointer-events: none;"></div>
+  <div class="w-hero-bl" aria-hidden="true" style="position: absolute; left: 0; bottom: 0; width: 20%; height: min(18%, 150px); background: #52E000; clip-path: polygon(0 0, 100% 100%, 0 100%); pointer-events: none;"></div>
+
+  <div class="hero-grid" style="position: relative; width: 100%; max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.02fr 0.98fr; gap: 40px; align-items: center;">
+    <div class="para" style="display: flex; flex-direction: column; gap: 20px;">
+      <div class="rise" style="--d: .05s; display: flex; align-items: center; gap: 10px;">
+        <span style="width: 8px; height: 8px; border-radius: 999px; background: #52E000; box-shadow: 0 0 12px #52E000;"></span>
+        <span style="font-size: 11px; font-weight: 800; letter-spacing: 2.4px; text-transform: uppercase; color: #52E000;">Coach AI personal para Dota 2 · gratis</span>
+      </div>
+      <h1 class="rise h1" style="--d: .15s; margin: 0; font-size: 72px; line-height: .96; font-weight: 900; letter-spacing: -1.5px; text-transform: uppercase; color: #FFFFFF;">Sube de MMR.<br>Entrena como<br><span style="position: relative; display: block; height: 1em; color: #52E000; text-shadow: 0 0 30px rgba(82,224,0,.35);"><span class="role on" data-dc-class="ro0">Midlaner</span><span class="role" data-dc-class="ro1">Carry</span><span class="role" data-dc-class="ro2">Offlaner</span><span class="role" data-dc-class="ro3">Support</span></span></h1>
+      <p class="rise lead" style="--d: .22s; margin: 0; max-width: 600px; font-size: 17px; line-height: 1.55; color: #E6E9ED;">Legends analiza tus replays de Dota 2, encuentra tus 3 brechas y te arma una ruta de entrenamiento semanal para tu rol. Gratis, sin Pay to Win y sin tocar tus FPS.</p>
+      <div class="rise" style="--d: .28s; display: grid; grid-template-columns: 52px 1fr; gap: 14px; align-items: start; max-width: 600px;">
+        <div style="width: 52px; height: 52px; border-radius: 999px; border: 2px solid #52E000; overflow: hidden; background: #13171B; box-shadow: 0 0 18px rgba(82,224,0,.35);">
+          <img src="../assets/watata-confiado.webp" alt="Watata, tu coach" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 10%; display: block; transform: scale(1.4); transform-origin: 50% 20%;">
+        </div>
+        <div style="background: #13171B; border: 1px solid rgba(82,224,0,.4); border-radius: 12px; padding: 12px 16px; display: flex; flex-direction: column; gap: 4px;">
+          <span style="font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #52E000;">Watata · Tu coach</span>
+          <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #E6E9ED;">Yo leo tus replays, tú juegas. En minutos tienes tu diagnóstico y tu primer desafío de la semana.</p>
+        </div>
+      </div>
+      <div class="rise" style="--d: .4s; display: flex; flex-direction: column; gap: 10px; align-items: flex-start;">
+        <a class="btn-p cta-main" href="#descargar" style="display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 18px 30px; border-radius: 10px; background: #52E000; color: #0C0E11; font-size: 14px; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; white-space: nowrap; box-shadow: 0 10px 30px rgba(82,224,0,.25);">Descargar gratis para Windows ▸</a>
+        <span style="font-size: 10px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: #8C929B;">Sin formularios · conectas Steam con un clic · sin Pay to Win</span>
+      </div>
+      <div class="rise hero-chips" style="--d: .55s; display: flex; flex-wrap: wrap; gap: 9px;">
+        <span class="chip" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 10px; background: #13171B; border: 1px solid rgba(255,255,255,.15); font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;"><span style="color: #52E000;">✓</span>Gratis y sin trampas</span>
+        <span class="chip" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 10px; background: #13171B; border: 1px solid rgba(255,255,255,.15); font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;"><span style="color: #F0564B;">✕</span>Pay to Win</span>
+        <span class="chip" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 10px; background: #13171B; border: 1px solid rgba(255,255,255,.15); font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;"><span style="color: #F5DD1F;">▲</span>+50 métricas</span>
+        <span class="chip" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 10px; background: #13171B; border: 1px solid rgba(255,255,255,.15); font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;"><span style="color: #52E000;">0</span>FPS perdidos</span>
+      </div>
+    </div>
+
+    <div class="rise hero-scene parb" style="--d: .35s; position: relative; height: 580px;">
+      <div class="scene" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%;">
+        <div style="position: absolute; left: 3%; top: 4%; width: 92%; border-radius: 16px; overflow: hidden; background: #13171B; border: 1px solid rgba(82,224,0,.45); box-shadow: 0 40px 90px rgba(0,0,0,.65), 0 0 70px rgba(82,224,0,.16);">
+          <div style="display: flex; align-items: center; gap: 6px; padding: 9px 12px; background: #0C0E11; border-bottom: 1px solid rgba(255,255,255,.08);">
+            <span style="width: 9px; height: 9px; border-radius: 999px; background: #F0564B;"></span>
+            <span style="width: 9px; height: 9px; border-radius: 999px; background: #F5DD1F;"></span>
+            <span style="width: 9px; height: 9px; border-radius: 999px; background: #52E000;"></span>
+            <span style="margin-left: 8px; font-size: 9px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #8C929B;">Legends · Modo Coach · Pos 2</span>
+          </div>
+          <img src="../assets/shot-coach.webp" alt="Modo Coach de Legends: diagnóstico de tu mejor partida como midlaner con 3 KPIs" style="width: 100%; display: block;">
+        </div>
+        <div class="px1" style="position: absolute; right: -3%; top: -4%;">
+          <div class="float sc-badge" style="width: 150px; padding: 14px 16px; border-radius: 12px; background: #0C0E11; border: 1px solid rgba(82,224,0,.7); color: #FFFFFF; box-shadow: 0 20px 50px rgba(0,0,0,.5), 0 0 40px rgba(82,224,0,.3); display: flex; flex-direction: column; gap: 2px;">
+            <span class="n" style="font-size: 58px; font-weight: 900; line-height: .9; letter-spacing: -2px; color: #52E000; text-shadow: 0 0 22px rgba(82,224,0,.45);">72</span>
+            <span style="font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #FFFFFF;">Mid score</span>
+            <span style="font-size: 10px; font-weight: 600; color: #C9CED6;">récord personal ▲</span>
+          </div>
+        </div>
+        <div class="px2 sc-chat" style="position: absolute; right: -5%; top: 26%; width: 30%;">
+          <div class="float" style="--fd: .4s; height: 250px; border-radius: 14px; overflow: hidden; background: #13171B; border: 1px solid rgba(255,255,255,.14); box-shadow: 0 24px 60px rgba(0,0,0,.55);">
+            <img src="../assets/shot-chat.webp" alt="Chat con Watata, el coach de Legends" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; display: block;">
+          </div>
+        </div>
+        <div class="px3" style="position: absolute; left: -6%; bottom: 13%; width: 80%;">
+          <div class="float" style="--fd: .9s; border-radius: 12px; overflow: hidden; border: 1px solid rgba(82,224,0,.35); box-shadow: 0 24px 60px rgba(0,0,0,.55);">
+            <img src="../assets/crop-kpis.webp" alt="Tres KPIs de la partida: dominio de la mid lane 90, presencia en peleas 80, timing de item core 45" style="width: 100%; display: block;">
+          </div>
+        </div>
+        <div class="px4 sc-toast" style="position: absolute; left: -8%; top: 46%; width: 42%;">
+          <div class="float" style="--fd: 1.4s; border-radius: 12px; overflow: hidden; border: 1px solid rgba(82,224,0,.4); box-shadow: 0 20px 50px rgba(0,0,0,.55);">
+            <img src="../assets/crop-toast.webp" alt="Aviso: programa listo, una partida sumada a tu programa" style="width: 100%; display: block;">
+          </div>
+        </div>
+        <div aria-hidden="true" class="glowy" style="position: absolute; right: 2%; bottom: 4%; width: 240px; height: 240px; border-radius: 999px; background: radial-gradient(circle, rgba(82,224,0,.45) 0%, rgba(82,224,0,0) 70%); pointer-events: none;"></div>
+        <img class="sc-watata" src="../assets/watata-confiado.webp" alt="Watata, el coach de Legends, con los brazos cruzados" style="position: absolute; right: -2%; bottom: -2%; height: 300px; width: auto; display: block; filter: drop-shadow(0 20px 30px rgba(0,0,0,.6));">
+      </div>
+    </div>
+  </div>
+  <span class="hint" aria-hidden="true" style="position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; color: #8C929B; font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;"><span>Desliza</span><span style="display: block; width: 12px; height: 12px; border-right: 2px solid #52E000; border-bottom: 2px solid #52E000; transform: rotate(45deg); animation: hint 1.6s ease-in-out infinite;"></span></span>
+</section>
+
+<!-- ===== 2 · AUTORIDAD Y CONFIANZA ===== -->
+<div aria-hidden="true" style="position: relative; overflow: hidden; background: #52E000; color: #0C0E11; padding: 14px 0; border-top: 1px solid rgba(0,0,0,.15); border-bottom: 1px solid rgba(0,0,0,.15);">
+  <div class="mq-track" style="display: flex; gap: 40px; width: max-content; white-space: nowrap; font-size: 12px; font-weight: 900; letter-spacing: 2.6px; text-transform: uppercase;">
+    <span>Gratis y sin trampas</span><span>·</span><span>No Pay to Win</span><span>·</span><span>No reduce tus FPS</span><span>·</span><span>No + ping</span><span>·</span><span>No capturamos tus datos</span><span>·</span><span>+50 métricas por replay</span><span>·</span><span>Plan de entrenamiento por rol</span><span>·</span><span>Transparencia total</span><span>·</span><span>Seguridad 100 %</span><span>·</span>
+    <span>Gratis y sin trampas</span><span>·</span><span>No Pay to Win</span><span>·</span><span>No reduce tus FPS</span><span>·</span><span>No + ping</span><span>·</span><span>No capturamos tus datos</span><span>·</span><span>+50 métricas por replay</span><span>·</span><span>Plan de entrenamiento por rol</span><span>·</span><span>Transparencia total</span><span>·</span><span>Seguridad 100 %</span><span>·</span>
+  </div>
+</div>
+<section id="confianza" class="sec" style="position: relative; overflow: hidden; padding: 72px 40px; background: #0F1216;">
+  <div style="position: relative; width: 100%; max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px;">
+    <div class="rv" style="display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px;">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <span style="font-size: 11px; font-weight: 800; letter-spacing: 2.4px; text-transform: uppercase; color: #52E000;">Confianza · lo que puedes verificar dentro de la app</span>
+        <h2 class="h2" style="margin: 0; font-size: 34px; line-height: 1.04; font-weight: 900; letter-spacing: -.4px; text-transform: uppercase; color: #FFFFFF;">Hecho sobre tus replays, no sobre promesas</h2>
+      </div>
+      <div class="trust-chips" style="display: flex; flex-wrap: wrap; gap: 8px;">
+        <span style="padding: 8px 11px; border-radius: 10px; background: #13171B; border: 1px solid rgba(255,255,255,.15); font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">Legends Analyzer · replays .dem</span>
+        <span style="padding: 8px 11px; border-radius: 10px; background: #13171B; border: 1px solid rgba(255,255,255,.15); font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">Benchmarks por rango y rol</span>
+        <span style="padding: 8px 11px; border-radius: 10px; background: #13171B; border: 1px solid rgba(82,224,0,.5); font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #52E000;">Steam OpenID · sin contraseña</span>
+      </div>
+    </div>
+    <div class="grid6" style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px;">
+      <div class="stat card rv" style="--d: .04s; background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 20px 18px; display: flex; flex-direction: column; gap: 6px;">
+        <span class="n" style="font-size: 40px; font-weight: 900; line-height: .95; letter-spacing: -1.5px; color: #52E000;">+50</span>
+        <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #FFFFFF;">Métricas por replay</span>
+        <span class="sl" style="font-size: 12px; line-height: 1.45; color: #8C929B;">GPM, XPM, timings, teamfights, visión</span>
+      </div>
+      <div class="stat card rv" style="--d: .08s; background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 20px 18px; display: flex; flex-direction: column; gap: 6px;">
+        <span class="n" style="font-size: 40px; font-weight: 900; line-height: .95; letter-spacing: -1.5px; color: #52E000;">3</span>
+        <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #FFFFFF;">KPIs por rol</span>
+        <span class="sl" style="font-size: 12px; line-height: 1.45; color: #8C929B;">cada uno con su cálculo a la vista</span>
+      </div>
+      <div class="stat card rv" style="--d: .12s; background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 20px 18px; display: flex; flex-direction: column; gap: 6px;">
+        <span class="n" style="font-size: 40px; font-weight: 900; line-height: .95; letter-spacing: -1.5px; color: #52E000;">5</span>
+        <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #FFFFFF;">Replays por calibración</span>
+        <span class="sl" style="font-size: 12px; line-height: 1.45; color: #8C929B;">escaneo automático o carga manual</span>
+      </div>
+      <div class="stat card rv" style="--d: .16s; background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 20px 18px; display: flex; flex-direction: column; gap: 6px;">
+        <span class="n" style="font-size: 40px; font-weight: 900; line-height: .95; letter-spacing: -1.5px; color: #F5DD1F;">0</span>
+        <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #FFFFFF;">FPS perdidos · 0 ping</span>
+        <span class="sl" style="font-size: 12px; line-height: 1.45; color: #8C929B;">el análisis corre fuera de la partida</span>
+      </div>
+      <div class="stat card rv" style="--d: .2s; background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 20px 18px; display: flex; flex-direction: column; gap: 6px;">
+        <span class="n" style="font-size: 40px; font-weight: 900; line-height: .95; letter-spacing: -1.5px; color: #52E000;">12</span>
+        <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #FFFFFF;">Desafíos por semana</span>
+        <span class="sl" style="font-size: 12px; line-height: 1.45; color: #8C929B;">desde tus 3 brechas, con XP y cofres</span>
+      </div>
+      <div class="stat card rv" style="--d: .24s; background: #13171B; border: 1px solid rgba(82,224,0,.5); border-radius: 14px; padding: 20px 18px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 0 30px rgba(82,224,0,.12);">
+        <span class="n" style="font-size: 40px; font-weight: 900; line-height: .95; letter-spacing: -1.5px; color: #52E000;">+1.200</span>
+        <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #FFFFFF;">MMR · Diego en 3 meses</span>
+        <span class="sl" style="font-size: 12px; line-height: 1.45; color: #8C929B;">jugando y usando Legends</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3 · CONEXIÓN CON EL PROBLEMA ===== -->
+<section id="problema" class="sec" style="position: relative; overflow: hidden; padding: 112px 40px; background: #0C0E11;">
+  <div class="w-prob-tl" aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 28%; height: min(36%, 300px); background: #181C20; clip-path: polygon(0 0, 100% 0, 0 100%); pointer-events: none;"></div>
+  <div class="cols2" style="position: relative; width: 100%; max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;">
+    <div style="display: flex; flex-direction: column; gap: 22px;">
+      <span class="rv" style="font-size: 11px; font-weight: 800; letter-spacing: 2.4px; text-transform: uppercase; color: #52E000;">El problema · ¿te suena?</span>
+      <h2 class="rv h2" style="--d: .08s; margin: 0; font-size: 46px; line-height: 1.02; font-weight: 900; letter-spacing: -.5px; text-transform: uppercase; color: #FFFFFF;">Pierdes, el chat dice «gg mid»… y nadie te dice por qué</h2>
+      <p class="rv lead" style="--d: .14s; margin: 0; font-size: 16px; line-height: 1.6; color: #C9CED6;">La pantalla final te da números sin explicación. Abres un replay de 45 minutos y no sabes qué mirar. Las guías son genéricas; tu partida no. Y así el MMR se queda donde está.</p>
+      <div class="rv" style="--d: .2s; display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 10px; background: #13171B; border: 1px solid rgba(240,86,75,.4);"><span style="color: #F0564B; font-weight: 900;">✕</span><span style="font-size: 13.5px; line-height: 1.5; color: #E6E9ED;">Los stats de la pantalla final no te dicen qué cambiar.</span></div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 10px; background: #13171B; border: 1px solid rgba(240,86,75,.4);"><span style="color: #F0564B; font-weight: 900;">✕</span><span style="font-size: 13.5px; line-height: 1.5; color: #E6E9ED;">Un replay sin guía es tiempo perdido.</span></div>
+        <div style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 10px; background: #13171B; border: 1px solid rgba(240,86,75,.4);"><span style="color: #F0564B; font-weight: 900;">✕</span><span style="font-size: 13.5px; line-height: 1.5; color: #E6E9ED;">Las guías genéricas no conocen tu rango, tu rol ni tu héroe.</span></div>
+        <div class="pain4" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 10px; background: #13171B; border: 1px solid rgba(240,86,75,.4);"><span style="color: #F0564B; font-weight: 900;">✕</span><span style="font-size: 13.5px; line-height: 1.5; color: #E6E9ED;">Jugar 10 partidas más no es entrenar: es repetir el mismo error 10 veces.</span></div>
+      </div>
+      <div class="rv wq" style="--d: .26s; display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: center; max-width: 560px;">
+        <div style="width: 44px; height: 44px; border-radius: 999px; border: 2px solid #52E000; overflow: hidden; background: #13171B;"><img src="../assets/watata-explica.webp" alt="" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 8%; display: block; transform: scale(1.5); transform-origin: 50% 18%;"></div>
+        <p style="margin: 0; font-size: 15px; font-weight: 700; line-height: 1.45; color: #FFFFFF;">«Perder no es el problema. No saber por qué, sí.» <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #52E000;">— Watata</span></p>
+      </div>
+    </div>
+
+    <div class="rv-x" style="--d: .1s; background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 18px; overflow: hidden; box-shadow: 0 40px 90px rgba(0,0,0,.6);">
+      <div style="display: grid; grid-template-columns: 1fr 1fr;">
+        <div style="padding: 14px 18px; background: #0C0E11; border-bottom: 1px solid rgba(255,255,255,.08); font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #F0564B;">✕ Sin Legends</div>
+        <div style="padding: 14px 18px; background: #0C0E11; border-bottom: 1px solid rgba(255,255,255,.08); border-left: 1px solid rgba(255,255,255,.08); font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #52E000;">✓ Con Legends</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr;">
+        <div class="cmp-col" style="padding: 18px; display: flex; flex-direction: column; gap: 12px; border-right: 1px solid rgba(255,255,255,.08);">
+          <div class="cmp-row" style="padding: 12px; border-radius: 10px; background: #0C0E11; border: 1px solid rgba(255,255,255,.08);"><span style="display: block; font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #8C929B;">Pantalla final</span><span style="font-size: 13px; color: #C9CED6;">K / D / A y GPM. Nada de por qué.</span></div>
+          <div class="cmp-row" style="padding: 12px; border-radius: 10px; background: #0C0E11; border: 1px solid rgba(255,255,255,.08);"><span style="display: block; font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #8C929B;">Replay</span><span style="font-size: 13px; color: #C9CED6;">45 minutos sin saber qué mirar.</span></div>
+          <div class="cmp-row" style="padding: 12px; border-radius: 10px; background: #0C0E11; border: 1px solid rgba(255,255,255,.08);"><span style="display: block; font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #8C929B;">Guía</span><span style="font-size: 13px; color: #C9CED6;">La misma para todos los rangos.</span></div>
+          <div class="cmp-row" style="padding: 12px; border-radius: 10px; background: #0C0E11; border: 1px solid rgba(255,255,255,.08);"><span style="display: block; font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #8C929B;">Plan</span><span style="font-size: 13px; color: #C9CED6;">«Jugar más».</span></div>
+        </div>
+        <div class="cmp-col" style="padding: 18px; display: flex; flex-direction: column; gap: 12px; background: rgba(82,224,0,.05);">
+          <div class="cmp-row" style="padding: 12px; border-radius: 10px; background: #0C0E11; border: 1px solid rgba(82,224,0,.4);"><span style="display: block; font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #52E000;">3 KPIs de tu rol</span><span style="font-size: 13px; color: #E6E9ED;">Con su cálculo, pesos y benchmark.</span></div>
+          <div class="cmp-row" style="padding: 12px; border-radius: 10px; background: #0C0E11; border: 1px solid rgba(82,224,0,.4);"><span style="display: block; font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #52E000;">Tu partida, explicada</span><span style="font-size: 13px; color: #E6E9ED;">Watata elige la más representativa y te dice dónde está la ganancia.</span></div>
+          <div class="cmp-row" style="padding: 12px; border-radius: 10px; background: #0C0E11; border: 1px solid rgba(82,224,0,.4);"><span style="display: block; font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #52E000;">Ruta para tu rango y rol</span><span style="font-size: 13px; color: #E6E9ED;">3 brechas → 12 desafíos semanales.</span></div>
+          <div class="cmp-row" style="padding: 12px; border-radius: 10px; background: #0C0E11; border: 1px solid rgba(82,224,0,.4);"><span style="display: block; font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #52E000;">Plan</span><span style="font-size: 13px; color: #E6E9ED;">Entrenar lo que de verdad te frena.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4 · PRESENTACIÓN DE LA OFERTA ===== -->
+<section id="oferta" class="sec" style="position: relative; overflow: hidden; padding: 112px 40px; background: #0F1216;">
+  <div aria-hidden="true" style="position: absolute; right: 0; top: 0; width: 18%; height: min(22%, 240px); background: #52E000; clip-path: polygon(40% 0, 100% 0, 100% 100%); pointer-events: none;"></div>
+  <div style="position: relative; width: 100%; max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px;">
+    <div class="sec-head rv" style="display: grid; grid-template-columns: 1.1fr .9fr; gap: 32px; align-items: end;">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-size: 11px; font-weight: 800; letter-spacing: 2.4px; text-transform: uppercase; color: #52E000;">La oferta · lo que recibes</span>
+        <h2 class="h2" style="margin: 0; font-size: 46px; line-height: 1.02; font-weight: 900; letter-spacing: -.5px; text-transform: uppercase; color: #FFFFFF;">Un coach que convierte cada replay en tu próximo paso</h2>
+      </div>
+      <p class="lead oferta-lead" style="margin: 0; font-size: 16px; line-height: 1.6; color: #C9CED6;">Legends analiza tus replays .dem después de la partida y los compara con el benchmark de tu rango y tu rol. No toca el cliente del juego, no vende ventajas y no se queda con tus datos.</p>
+    </div>
+
+    <div class="grid4" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px;">
+      <div class="card rv" style="--d: .05s; background: #191E24; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 24px; min-height: 230px; display: flex; flex-direction: column; gap: 12px;">
+        <div class="ico" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(82,224,0,.1); border: 1px solid rgba(82,224,0,.4); display: flex; align-items: center; justify-content: center; color: #6EF21C;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20v-9"></path><path d="M10 20V4"></path><path d="M16 20v-7"></path><path d="M22 20H2"></path></svg></div>
+        <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #52E000;">Análisis personalizado · +50 métricas</span>
+        <div class="ctitle" style="font-size: 15px; font-weight: 800; letter-spacing: .3px; color: #FFFFFF;">Sabes exactamente qué te frena</div>
+        <div class="cbody" style="font-size: 13.5px; line-height: 1.55; color: #C9CED6;">GPM, XPM, timings, teamfights y visión de tu replay, comparados con tu rango y tu héroe.</div>
+      </div>
+      <div class="card rv" style="--d: .12s; background: #191E24; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 24px; min-height: 230px; display: flex; flex-direction: column; gap: 12px;">
+        <div class="ico" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(82,224,0,.1); border: 1px solid rgba(82,224,0,.4); display: flex; align-items: center; justify-content: center; color: #6EF21C;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="2"></circle><circle cx="18" cy="5" r="2"></circle><path d="M8 19h6a4 4 0 0 0 0-8h-4a4 4 0 0 1 0-8h6"></path></svg></div>
+        <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #52E000;">Plan de entrenamiento por rol</span>
+        <div class="ctitle" style="font-size: 15px; font-weight: 800; letter-spacing: .3px; color: #FFFFFF;">Un plan para tu rol, no una guía genérica</div>
+        <div class="cbody" style="font-size: 13.5px; line-height: 1.55; color: #C9CED6;">3 KPIs por posición, tus 3 brechas y 12 desafíos semanales con XP, cofres y vidas.</div>
+      </div>
+      <div class="card rv" style="--d: .19s; background: #191E24; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 24px; min-height: 230px; display: flex; flex-direction: column; gap: 12px;">
+        <div class="ico" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(82,224,0,.1); border: 1px solid rgba(82,224,0,.4); display: flex; align-items: center; justify-content: center; color: #6EF21C;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+        <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #52E000;">Transparencia</span>
+        <div class="ctitle" style="font-size: 15px; font-weight: 800; letter-spacing: .3px; color: #FFFFFF;">Confías en cada número</div>
+        <div class="cbody" style="font-size: 13.5px; line-height: 1.55; color: #C9CED6;">Cada score muestra cómo se calculó: pesos por fase, benchmark y la partida de origen.</div>
+      </div>
+      <div class="card rv" style="--d: .26s; background: #191E24; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 24px; min-height: 230px; display: flex; flex-direction: column; gap: 12px;">
+        <div class="ico" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(245,221,31,.1); border: 1px solid rgba(245,221,31,.45); display: flex; align-items: center; justify-content: center; color: #F5DD1F;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"></path></svg></div>
+        <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #F5DD1F;">Optimizado para juegos</span>
+        <div class="ctitle" style="font-size: 15px; font-weight: 800; letter-spacing: .3px; color: #FFFFFF;">Entrenas sin perder rendimiento</div>
+        <div class="cbody" style="font-size: 13.5px; line-height: 1.55; color: #C9CED6;">No reduce tus FPS y no suma ping: el análisis corre fuera de la partida, sobre el replay.</div>
+      </div>
+      <div class="card rv" style="--d: .05s; background: #191E24; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 24px; min-height: 230px; display: flex; flex-direction: column; gap: 12px;">
+        <div class="ico" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(82,224,0,.1); border: 1px solid rgba(82,224,0,.4); display: flex; align-items: center; justify-content: center; color: #6EF21C;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg></div>
+        <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #52E000;">Seguridad 100 %</span>
+        <div class="ctitle" style="font-size: 15px; font-weight: 800; letter-spacing: .3px; color: #FFFFFF;">Tu cuenta, a salvo</div>
+        <div class="cbody" style="font-size: 13.5px; line-height: 1.55; color: #C9CED6;">Te conectas con Steam OpenID: Legends identifica tu SteamID y nunca te pide tu contraseña.</div>
+      </div>
+      <div class="card rv" style="--d: .12s; background: #191E24; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 24px; min-height: 230px; display: flex; flex-direction: column; gap: 12px;">
+        <div class="ico" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(82,224,0,.1); border: 1px solid rgba(82,224,0,.4); display: flex; align-items: center; justify-content: center; color: #6EF21C;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"></ellipse><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"></path><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"></path><path d="M3 3l18 18"></path></svg></div>
+        <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #52E000;">No capturamos tus datos</span>
+        <div class="ctitle" style="font-size: 15px; font-weight: 800; letter-spacing: .3px; color: #FFFFFF;">Tus datos son tuyos</div>
+        <div class="cbody" style="font-size: 13.5px; line-height: 1.55; color: #C9CED6;">Lo que analizamos es para ti. No capturamos tus datos ni los usamos para nada más.</div>
+      </div>
+      <div class="card rv" style="--d: .19s; background: #191E24; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 24px; min-height: 230px; display: flex; flex-direction: column; gap: 12px;">
+        <div class="ico" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(240,86,75,.1); border: 1px solid rgba(240,86,75,.45); display: flex; align-items: center; justify-content: center; color: #F0564B;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M5.6 5.6l12.8 12.8"></path></svg></div>
+        <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #F0564B;">Gratis y sin trampas · no Pay to Win</span>
+        <div class="ctitle" style="font-size: 15px; font-weight: 800; letter-spacing: .3px; color: #FFFFFF;">El progreso se gana, no se compra</div>
+        <div class="cbody" style="font-size: 13.5px; line-height: 1.55; color: #C9CED6;">Legends es gratis y no lee memoria ni toca el cliente. Nadie compra ventajas: no nos gusta.</div>
+      </div>
+      <div class="card rv" style="--d: .26s; background: #191E24; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 24px; min-height: 230px; display: flex; flex-direction: column; gap: 12px;">
+        <div class="ico" style="width: 44px; height: 44px; border-radius: 10px; background: rgba(82,224,0,.1); border: 1px solid rgba(82,224,0,.4); display: flex; align-items: center; justify-content: center; color: #6EF21C;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5"></rect><path d="M6 12.5h4"></path><path d="M8 10.5v4"></path><circle cx="16" cy="11" r="1"></circle><circle cx="18.5" cy="13.5" r="1"></circle></svg></div>
+        <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #52E000;">Múltiples juegos</span>
+        <div class="ctitle" style="font-size: 15px; font-weight: 800; letter-spacing: .3px; color: #FFFFFF;">Dota 2 hoy, más juegos mañana</div>
+        <div style="display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: #C9CED6;">
+          <span><span style="color: #52E000;">✓</span> Dota 2 · disponible</span>
+          <span><span style="color: #F5DD1F;">●</span> League of Legends · trabajando</span>
+          <span style="color: #8C929B;">○ Fortnite · futuro</span>
+          <span style="color: #8C929B;">○ Deadlock · futuro</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 22px; margin-top: 24px;">
+      <div class="rv" style="display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 14px;">
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <span style="font-size: 11px; font-weight: 800; letter-spacing: 2.4px; text-transform: uppercase; color: #52E000;">Cómo funciona</span>
+          <h3 class="h3" style="margin: 0; font-size: 32px; line-height: 1.04; font-weight: 900; letter-spacing: -.4px; text-transform: uppercase; color: #FFFFFF;">3 pasos simples. Legends hace el resto.</h3>
+        </div>
+        <span class="how-lead" style="font-size: 12px; line-height: 1.5; color: #8C929B; max-width: 420px;">Mientras tú juegas, Legends extrae +50 métricas, detecta tu rol, compara con tu rango y arma tu programa Coach + Entrenar.</span>
+      </div>
+      <div class="rv steps-strip" style="--d: .06s; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,.1); background: #13171B;">
+        <img src="../assets/shot-steps.webp" alt="Pipeline de calibración de Legends: conexión Steam, selección de replays, análisis del replay, rol + benchmarks y programa Coach" style="width: 100%; display: block;">
+        <div style="padding: 10px 14px; border-top: 1px solid rgba(255,255,255,.08); font-size: 10px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: #8C929B;">El pipeline real de la app: tú haces el 1 y el 2 · Legends hace el 3, el 4 y el 5</div>
+      </div>
+      <div class="cols2" style="display: grid; grid-template-columns: .92fr 1.08fr; gap: 28px; align-items: start;">
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button type="button" class="step on" data-dc-class="st0" data-dc-click="pick0" style="position: relative; overflow: hidden; width: 100%; text-align: left; cursor: pointer; background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 18px; display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: start; color: #FFFFFF;">
+            <span class="num" style="width: 40px; height: 40px; border-radius: 999px; background: #242B33; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; color: #FFFFFF;">1</span>
+            <span style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 15px; font-weight: 800; letter-spacing: .4px; text-transform: uppercase;">Descarga y conecta Steam</span><span class="sbody" style="font-size: 13px; line-height: 1.5; color: #C9CED6;">Un clic con Steam OpenID. Sin contraseña, sin formularios, sin tocar el cliente.</span></span>
+            <span class="bar" style="position: absolute; left: 0; bottom: 0; height: 3px; background: #52E000;"></span>
+          </button>
+          <button type="button" class="step" data-dc-class="st1" data-dc-click="pick1" style="position: relative; overflow: hidden; width: 100%; text-align: left; cursor: pointer; background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 18px; display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: start; color: #FFFFFF;">
+            <span class="num" style="width: 40px; height: 40px; border-radius: 999px; background: #242B33; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; color: #FFFFFF;">2</span>
+            <span style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 15px; font-weight: 800; letter-spacing: .4px; text-transform: uppercase;">Elige hasta 5 replays</span><span class="sbody" style="font-size: 13px; line-height: 1.5; color: #C9CED6;">Legends escanea tu carpeta de replays de Dota 2 o cargas los archivos .dem a mano.</span></span>
+            <span class="bar" style="position: absolute; left: 0; bottom: 0; height: 3px; background: #52E000;"></span>
+          </button>
+          <button type="button" class="step" data-dc-class="st2" data-dc-click="pick2" style="position: relative; overflow: hidden; width: 100%; text-align: left; cursor: pointer; background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 18px; display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: start; color: #FFFFFF;">
+            <span class="num" style="width: 40px; height: 40px; border-radius: 999px; background: #242B33; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; color: #FFFFFF;">3</span>
+            <span style="display: flex; flex-direction: column; gap: 4px;"><span style="font-size: 15px; font-weight: 800; letter-spacing: .4px; text-transform: uppercase;">Recibe tu diagnóstico y tu ruta por rol</span><span class="sbody" style="font-size: 13px; line-height: 1.5; color: #C9CED6;">En minutos: los 3 KPIs de tu rol explicados en Modo Coach y 12 desafíos de la semana en Entrenar. Y lo que no entiendas, se lo preguntas a Watata.</span></span>
+            <span class="bar" style="position: absolute; left: 0; bottom: 0; height: 3px; background: #52E000;"></span>
+          </button>
+          <div class="auto-chips" style="display: flex; flex-wrap: wrap; gap: 8px; padding-top: 4px;">
+            <span style="font-size: 10px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: #8C929B;">Automático:</span>
+            <span style="padding: 7px 10px; border-radius: 10px; background: #13171B; border: 1px solid rgba(255,255,255,.15); font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">+50 métricas</span>
+            <span style="padding: 7px 10px; border-radius: 10px; background: #13171B; border: 1px solid rgba(255,255,255,.15); font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">Rol + benchmarks</span>
+            <span style="padding: 7px 10px; border-radius: 10px; background: #13171B; border: 1px solid rgba(255,255,255,.15); font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">Programa Coach</span>
+          </div>
+        </div>
+        <div class="rv-x" style="--d: .1s; display: flex; flex-direction: column; gap: 12px;">
+          <div class="steps-screen" style="position: relative; width: 100%; aspect-ratio: 16 / 10; border-radius: 18px; overflow: hidden; background: #13171B; border: 1px solid rgba(82,224,0,.4); box-shadow: 0 40px 90px rgba(0,0,0,.6), 0 0 60px rgba(82,224,0,.12);">
+            <img class="shot on" data-dc-class="sh0" src="../assets/shot-perfil.webp" alt="Perfil de cuenta Steam en Legends con SteamID64, rango benchmark y extracto para compartir">
+            <img class="shot" data-dc-class="sh1" src="../assets/shot-replays.webp" alt="Selección de replays: lista de archivos .dem encontrados y partidas seleccionadas">
+            <img class="shot" data-dc-class="sh2" src="../assets/shot-wards.webp" alt="Diagnóstico por rol en Legends: KPI de densidad y distribución de warding (87 de 100) con el mapa de wards, cómo se calculó y el análisis de Watata">
+            <span style="position: absolute; left: 14px; bottom: 14px; padding: 8px 12px; border-radius: 10px; background: rgba(12,14,17,.85); border: 1px solid rgba(82,224,0,.5); font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #6EF21C;"><span data-dc-text="cap">Paso 1 · Descarga y conecta Steam</span></span>
+          </div>
+          <div class="chatp" style="display: grid; grid-template-columns: 120px 1fr; gap: 14px; align-items: center; background: #13171B; border: 1px solid rgba(82,224,0,.35); border-radius: 14px; padding: 12px 14px;">
+            <div class="chat-img" style="height: 110px; border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,.1); background: #0C0E11;"><img src="../assets/shot-chat.webp" alt="Chat con Watata dentro de Legends" style="width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; display: block;"></div>
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+              <span style="font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #52E000;">Chat con Watata · incluido</span>
+              <span style="font-size: 16px; font-weight: 800; color: #FFFFFF;">Pregúntale lo que sea</span>
+              <span style="font-size: 13px; line-height: 1.5; color: #C9CED6;">Watata te ayuda con las preguntas que tengas de tus partidas: por qué se frenó tu lane, qué ítem adelantar o cómo leer un KPI.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4b · LA RUTA SEMANAL (gamificación, dentro de la oferta) ===== -->
+<section id="ruta" class="sec" style="position: relative; overflow: hidden; padding: 112px 40px; background: #0C0E11;">
+  <div class="w-ruta" aria-hidden="true" style="position: absolute; right: 0; top: 0; width: 46%; height: 100%; background: #52E000; clip-path: polygon(36% 0, 100% 0, 100% 100%, 0 100%); pointer-events: none;"></div>
+  <div class="cols2" style="position: relative; width: 100%; max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;">
+    <div style="display: flex; flex-direction: column; gap: 22px;">
+      <span class="rv" style="font-size: 11px; font-weight: 800; letter-spacing: 2.4px; text-transform: uppercase; color: #52E000;">Entrenar · tu ruta de la semana</span>
+      <h2 class="rv h2" style="--d: .08s; margin: 0; font-size: 46px; line-height: 1.02; font-weight: 900; letter-spacing: -.5px; text-transform: uppercase; color: #FFFFFF;">Cada semana, un desafío nuevo desde tus brechas</h2>
+      <p class="rv lead" style="--d: .14s; margin: 0; font-size: 16px; line-height: 1.6; color: #C9CED6;">Watata convierte tus 3 brechas en 12 desafíos: role-play, decisiones rápidas y lecciones cortas. Ganas XP, abres cofres, cuidas tus vidas y mantienes la racha. Entrenar deja de ser «ver replays».</p>
+      <div class="rv" style="--d: .2s; display: flex; flex-wrap: wrap; gap: 9px;">
+        <span class="chip" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 10px; background: rgba(82,224,0,.1); border: 1px solid rgba(82,224,0,.45); font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">3 brechas</span>
+        <span class="chip" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 10px; background: rgba(245,221,31,.1); border: 1px solid rgba(245,221,31,.45); font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">12 desafíos</span>
+        <span class="chip" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 10px; background: rgba(138,147,240,.1); border: 1px solid rgba(138,147,240,.45); font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">Cofres +50 XP</span>
+        <span class="chip" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 10px; background: rgba(240,86,75,.1); border: 1px solid rgba(240,86,75,.45); font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">Vidas ●●●●●</span>
+      </div>
+      <div class="rv" style="--d: .28s; background: #13171B; border: 1px solid rgba(82,224,0,.45); border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 20px 50px rgba(0,0,0,.4);">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+          <span style="font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #52E000;">Brecha 1 · Lane (IHS) · pruébalo</span>
+          <span style="padding: 5px 9px; border-radius: 7px; background: #F5DD1F; color: #0C0E11; font-size: 10px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase;">+30 XP</span>
+        </div>
+        <div style="font-size: 18px; font-weight: 800; color: #FFFFFF;">Safelane estable</div>
+        <div style="font-size: 13.5px; line-height: 1.5; color: #C9CED6;">Protege la progresión de tu carry sin regalar tu propia vida: dos decisiones rápidas por oleada.</div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="flex-grow: 1; height: 8px; border-radius: 999px; background: rgba(255,255,255,.06); overflow: hidden;"><div style="height: 100%; border-radius: 999px; background: #52E000; transition: width .8s cubic-bezier(.2,.7,.3,1); width: 68%;" data-dc-style="width:xpW" data-dc-x=""></div></div>
+          <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #8C929B; white-space: nowrap;">Nivel 7 · <span data-dc-text="xp">340</span> / 500 XP</span>
+        </div>
+        <div data-dc-if="todo" style="display: contents;">
+          <button type="button" class="btn-p" data-dc-click="complete" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 12px 20px; border: 0; border-radius: 10px; background: #52E000; color: #0C0E11; font-size: 12px; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; cursor: pointer;">Completar desafío ▸</button>
+        </div>
+        <div data-dc-if="done" style="display: contents;">
+          <div style="position: relative; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 10px 14px; border-radius: 10px; background: rgba(82,224,0,.12); border: 1px solid rgba(82,224,0,.5); color: #6EF21C; font-size: 13px; font-weight: 800;"><span>✓</span><span>¡Nodo completado! +30 XP. Cuando quieras seguimos: tu ruta te espera.</span><span class="xpf" aria-hidden="true" style="position: absolute; right: 14px; top: -6px; color: #F5DD1F; font-weight: 900;">+30 XP</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vis rv-x" style="position: relative; min-height: 580px;">
+      <div class="float" style="position: absolute; left: 0; top: 2%; width: 86%; border-radius: 18px; overflow: hidden; background: #0C0E11; border: 1px solid rgba(82,224,0,.45); box-shadow: 0 40px 90px rgba(0,0,0,.6);">
+        <img src="../assets/crop-ruta.webp" alt="Ruta de la semana en Entrenar: Watata y el diagnóstico del coach en curso, con los primeros desafíos bloqueados" style="width: 100%; display: block;">
+      </div>
+      <div class="float" style="--fd: .5s; position: absolute; right: -2%; top: 0; width: 50%; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,.14); box-shadow: 0 24px 60px rgba(0,0,0,.55); background: #13171B;">
+        <img src="../assets/crop-progreso.webp" alt="Progreso de la semana: 0 de 12 desafíos, por Lane, Peleas y Visión" style="width: 100%; display: block;">
+      </div>
+      <div class="float" style="--fd: 1s; position: absolute; right: 0; bottom: 6%; width: 54%; border-radius: 14px; overflow: hidden; border: 1px solid rgba(245,221,31,.45); box-shadow: 0 24px 60px rgba(0,0,0,.55); background: #13171B;">
+        <img src="../assets/crop-cofres.webp" alt="Cofres de recompensa bloqueados de +50 XP" style="width: 100%; display: block;">
+      </div>
+      <div style="position: absolute; left: 4%; bottom: 0; display: flex; flex-wrap: wrap; gap: 9px;">
+        <span style="padding: 9px 12px; border-radius: 10px; background: #13171B; border: 1px solid rgba(255,255,255,.15); font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">Racha ▲ 4</span>
+        <span style="padding: 9px 12px; border-radius: 10px; background: #13171B; border: 1px solid rgba(255,255,255,.15); font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">Nivel 7 · 340 / 500 XP</span>
+        <span style="padding: 9px 12px; border-radius: 10px; background: #F5DD1F; color: #0C0E11; font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase;">+40 XP hoy</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5 · PRUEBA SOCIAL ===== -->
+<section id="resultados" class="sec" style="position: relative; overflow: hidden; padding: 112px 40px; background: #0F1216;">
+  <div class="w-res" aria-hidden="true" style="position: absolute; right: 0; top: 0; width: 22%; height: min(30%, 300px); background: #52E000; clip-path: polygon(40% 0, 100% 0, 100% 100%); pointer-events: none;"></div>
+  <div style="position: relative; width: 100%; max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px;">
+    <div class="sec-head rv" style="display: grid; grid-template-columns: 1.1fr .9fr; gap: 32px; align-items: end;">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-size: 11px; font-weight: 800; letter-spacing: 2.4px; text-transform: uppercase; color: #52E000;">Prueba social · resultados reales</span>
+        <h2 class="h2" style="margin: 0; font-size: 46px; line-height: 1.02; font-weight: 900; letter-spacing: -.5px; text-transform: uppercase; color: #FFFFFF;">Lo que pasa cuando entrenas con un plan</h2>
+      </div>
+      <p class="lead" style="margin: 0; font-size: 16px; line-height: 1.6; color: #C9CED6;">Jugar más no es entrenar. Con un diagnóstico por rol y una ruta semanal, cada partida suma hacia algo concreto. Capturas reales de la app, sin retoques.</p>
+    </div>
+
+    <div class="cols3" style="display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 14px; align-items: stretch;">
+      <div class="card rv res-main" data-count="1" style="--d: .05s; position: relative; overflow: hidden; background: #13171B; border: 1px solid rgba(82,224,0,.55); border-radius: 18px; padding: 30px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 0 60px rgba(82,224,0,.12);">
+        <div aria-hidden="true" style="position: absolute; right: -40px; top: -40px; width: 220px; height: 220px; border-radius: 999px; background: radial-gradient(circle, rgba(82,224,0,.22) 0%, rgba(82,224,0,0) 70%); pointer-events: none;"></div>
+        <span style="font-size: 11px; font-weight: 800; letter-spacing: 2.4px; text-transform: uppercase; color: #52E000;">Resultado real · Diego</span>
+        <div style="display: flex; align-items: baseline; gap: 10px;">
+          <span class="big" style="font-size: 92px; font-weight: 900; line-height: .9; letter-spacing: -3px; color: #52E000; text-shadow: 0 0 30px rgba(82,224,0,.35);">+<span data-dc-text="mmr">1.200</span></span>
+          <span style="font-size: 16px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #FFFFFF;">MMR</span>
+        </div>
+        <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #E6E9ED;">Diego mejoró <strong style="color: #FFFFFF;">1200 MMR en 3 meses</strong> jugando y utilizando Legends.</p>
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+          <div style="height: 10px; border-radius: 999px; background: rgba(255,255,255,.06); overflow: hidden;"><div class="fill" style="--w: 100%; --fd: .4s; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #3EA903, #52E000, #6EF21C);"></div></div>
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #8C929B;"><span>Mes 1</span><span style="text-align: center;">Mes 2</span><span style="text-align: right;">Mes 3 · +1200 ▲</span></div>
+        </div>
+        <div style="margin-top: auto; display: flex; flex-wrap: wrap; gap: 9px;">
+          <span style="padding: 7px 10px; border-radius: 10px; background: rgba(82,224,0,.1); border: 1px solid rgba(82,224,0,.45); font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">Jugando</span>
+          <span style="padding: 7px 10px; border-radius: 10px; background: rgba(82,224,0,.1); border: 1px solid rgba(82,224,0,.45); font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">+ Legends</span>
+          <span style="padding: 7px 10px; border-radius: 10px; background: rgba(82,224,0,.1); border: 1px solid rgba(82,224,0,.45); font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">3 meses</span>
+        </div>
+      </div>
+      <div class="card rv" style="--d: .12s; background: #191E24; border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-size: 11px; font-weight: 800; letter-spacing: 2.4px; text-transform: uppercase; color: #52E000;">Caso real en la app · Stephano · Pos 2 · Divine II</span>
+        <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;"><span class="ph" style="font-size: 56px; font-weight: 900; line-height: .9; letter-spacing: -2px; color: #FFFFFF; white-space: nowrap;">72</span><span style="font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #C9CED6;">Mid Score · récord personal ▲</span></div>
+        <p style="margin: 0; font-size: 14px; line-height: 1.55; color: #C9CED6;">«Dominaste la lane: 127 last hits, 531 XPM, supervivencia perfecta y una ventaja clara sobre Ember Spirit. El siguiente salto es capitalizar ese inicio.» <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #52E000;">— Watata · Modo Coach</span></p>
+        <span style="margin-top: auto; font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #8C929B;">DML 90 · PPD 80 · TIC 45 · Storm Spirit · 22 jun</span>
+      </div>
+      <div class="card rv" style="--d: .19s; background: #191E24; border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-size: 11px; font-weight: 800; letter-spacing: 2.4px; text-transform: uppercase; color: #52E000;">Caso real en la app · Pos 5 · Hard Support</span>
+        <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;"><span class="ph" style="font-size: 56px; font-weight: 900; line-height: .9; letter-spacing: -2px; color: #FFFFFF; white-space: nowrap;">87</span><span style="font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #C9CED6;">DVW · nivel Élite · 35 wards</span></div>
+        <p style="margin: 0; font-size: 14px; line-height: 1.55; color: #C9CED6;">«En esta victoria tu presencia en peleas fue de 100 % y colocaste 35 wards, pero la safelane quedó frenada: ahí está tu mayor ganancia.» <span style="font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #52E000;">— Watata · Analizar</span></p>
+        <span style="margin-top: auto; font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #8C929B;">Victoria · PPD 88 · DVW 87 · brecha detectada: IHS 12 · Witch Doctor</span>
+      </div>
+    </div>
+
+    <div class="cols2" style="display: grid; grid-template-columns: 1.15fr .85fr; gap: 14px; align-items: stretch;">
+      <div class="card rv" style="--d: .08s; background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 28px; display: flex; flex-direction: column; gap: 18px;">
+        <span style="font-size: 11px; font-weight: 800; letter-spacing: 2.4px; text-transform: uppercase; color: #52E000;">Captura real de la app · Pos 2 · Storm Spirit · 22 jun</span>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 22px;">
+          <div class="scoretile" style="display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 12px; background: #52E000; color: #0C0E11; box-shadow: 0 0 40px rgba(82,224,0,.3);">
+            <span class="n" style="font-size: 52px; font-weight: 900; line-height: .9; letter-spacing: -2px;">72</span>
+            <span style="display: flex; flex-direction: column; gap: 2px;"><span style="font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">Mid score</span><span style="font-size: 10px; font-weight: 600;">récord personal ▲</span></span>
+          </div>
+          <div class="gauge" style="display: flex; align-items: center; gap: 10px;">
+            <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="6"></circle><circle class="val" cx="32" cy="32" r="27" fill="none" stroke="#52E000" stroke-width="6" stroke-linecap="round" stroke-dasharray="169.6" transform="rotate(-90 32 32)" style="--off: 16.96;"></circle></svg>
+            <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 26px; font-weight: 900; line-height: 1; color: #FFFFFF;">90</span><span style="font-size: 10px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: #8C929B;">DML · Dominio de la mid lane</span></span>
+          </div>
+          <div class="gauge" style="display: flex; align-items: center; gap: 10px;">
+            <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="6"></circle><circle class="val" cx="32" cy="32" r="27" fill="none" stroke="#52E000" stroke-width="6" stroke-linecap="round" stroke-dasharray="169.6" transform="rotate(-90 32 32)" style="--off: 33.92;"></circle></svg>
+            <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 26px; font-weight: 900; line-height: 1; color: #FFFFFF;">80</span><span style="font-size: 10px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: #8C929B;">PPD · Presencia en peleas</span></span>
+          </div>
+          <div class="gauge" style="display: flex; align-items: center; gap: 10px;">
+            <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="6"></circle><circle class="val" cx="32" cy="32" r="27" fill="none" stroke="#F5DD1F" stroke-width="6" stroke-linecap="round" stroke-dasharray="169.6" transform="rotate(-90 32 32)" style="--off: 93.28;"></circle></svg>
+            <span style="display: flex; flex-direction: column; gap: 3px;"><span style="font-size: 26px; font-weight: 900; line-height: 1; color: #FFFFFF;">45 ▼</span><span style="font-size: 10px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: #8C929B;">TIC · Timing de item core</span></span>
+          </div>
+        </div>
+        <p style="margin: 0; font-size: 13.5px; line-height: 1.55; color: #C9CED6;">Cada KPI viene con su desglose: pesos por fase, benchmark de tu héroe y rango, y la partida de origen. El color nunca es la única señal: siempre va con el número y una flecha ▲/▼.</p>
+      </div>
+      <div class="card rv share" style="--d: .16s; background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-size: 11px; font-weight: 800; letter-spacing: 2.4px; text-transform: uppercase; color: #52E000;">Extracto para compartir</span>
+        <div class="float" style="border-radius: 12px; overflow: hidden; border: 1px solid rgba(82,224,0,.4); box-shadow: 0 20px 50px rgba(0,0,0,.5);"><img src="../assets/crop-share.webp" alt="Tarjeta para compartir: 72 Carry Score, Stephano, Hard Carry Pos 1" style="width: 100%; display: block;"></div>
+        <p style="margin: 0; font-size: 13.5px; line-height: 1.55; color: #C9CED6;">Tu score en una tarjeta lista para Discord, TikTok o Instagram. Presume el récord, no el pay to win.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6 · FAQ ===== -->
+<section id="faq" class="sec" style="position: relative; overflow: hidden; padding: 112px 40px; background: #0C0E11;">
+  <div style="position: relative; width: 100%; max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px;">
+    <div class="sec-head rv" style="display: grid; grid-template-columns: 1.1fr .9fr; gap: 32px; align-items: end;">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <span style="font-size: 11px; font-weight: 800; letter-spacing: 2.4px; text-transform: uppercase; color: #52E000;">Preguntas frecuentes</span>
+        <h2 class="h2" style="margin: 0; font-size: 46px; line-height: 1.02; font-weight: 900; letter-spacing: -.5px; text-transform: uppercase; color: #FFFFFF;">Lo que todo jugador pregunta antes de descargar</h2>
+      </div>
+      <p class="lead faq-lead" style="margin: 0; font-size: 16px; line-height: 1.6; color: #C9CED6;">Respuestas directas, sin letra chica. Si te queda alguna duda, Watata la responde dentro de la app.</p>
+    </div>
+    <div class="faq-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="faq open" data-dc-class="fq0" style="background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; overflow: hidden;">
+          <button type="button" class="q" aria-expanded="true" data-dc-attr="aria-expanded:ex0" data-dc-click="tf0" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 14px; text-align: left; cursor: pointer; background: transparent; border: 0; padding: 18px 20px; color: #FFFFFF; font-size: 15px; font-weight: 800; letter-spacing: .2px;"><span>¿Legends es gratis de verdad?</span><span class="chev" style="flex-shrink: 0; color: #8C929B; font-size: 14px;">▼</span></button>
+          <div class="ans"><p style="margin: 0; padding: 0 20px 18px; font-size: 14px; line-height: 1.6; color: #C9CED6;">Sí. Descargas, conectas Steam y entrenas sin pagar. No hay ventajas de pago: no nos gusta el Pay to Win, el progreso se gana entrenando.</p></div>
+        </div>
+        <div class="faq" data-dc-class="fq8" style="background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; overflow: hidden;">
+          <button type="button" class="q" aria-expanded="false" data-dc-attr="aria-expanded:ex8" data-dc-click="tf8" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 14px; text-align: left; cursor: pointer; background: transparent; border: 0; padding: 18px 20px; color: #FFFFFF; font-size: 15px; font-weight: 800; letter-spacing: .2px;"><span>¿Cómo analizan mis replays?</span><span class="chev" style="flex-shrink: 0; color: #8C929B; font-size: 14px;">▼</span></button>
+          <div class="ans"><p style="margin: 0; padding: 0 20px 18px; font-size: 14px; line-height: 1.6; color: #C9CED6;">Dota 2, como otros juegos, te deja ver la repetición de tus partidas. No es un video grabado: el juego reconstruye la sesión a partir de un archivo, el replay, que en Dota 2 tiene extensión .dem. Cuando descargas las repeticiones de tus partidas, Legends reconoce los replays nuevos en tu carpeta y tú eliges cuál analizar. De ese archivo salen las +50 métricas, tu rol y tu diagnóstico.</p></div>
+        </div>
+        <div class="faq" data-dc-class="fq1" style="background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; overflow: hidden;">
+          <button type="button" class="q" aria-expanded="false" data-dc-attr="aria-expanded:ex1" data-dc-click="tf1" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 14px; text-align: left; cursor: pointer; background: transparent; border: 0; padding: 18px 20px; color: #FFFFFF; font-size: 15px; font-weight: 800; letter-spacing: .2px;"><span>¿Es seguro para mi cuenta de Steam?</span><span class="chev" style="flex-shrink: 0; color: #8C929B; font-size: 14px;">▼</span></button>
+          <div class="ans"><p style="margin: 0; padding: 0 20px 18px; font-size: 14px; line-height: 1.6; color: #C9CED6;">Te conectas con Steam OpenID, así que nunca te pedimos tu contraseña. Legends no modifica ni lee el cliente del juego: analiza los archivos de replay .dem que Dota 2 guarda en tu PC. No es un cheat ni un overlay.</p></div>
+        </div>
+        <div class="faq" data-dc-class="fq2" style="background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; overflow: hidden;">
+          <button type="button" class="q" aria-expanded="false" data-dc-attr="aria-expanded:ex2" data-dc-click="tf2" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 14px; text-align: left; cursor: pointer; background: transparent; border: 0; padding: 18px 20px; color: #FFFFFF; font-size: 15px; font-weight: 800; letter-spacing: .2px;"><span>¿Me baja los FPS o me sube el ping?</span><span class="chev" style="flex-shrink: 0; color: #8C929B; font-size: 14px;">▼</span></button>
+          <div class="ans"><p style="margin: 0; padding: 0 20px 18px; font-size: 14px; line-height: 1.6; color: #C9CED6;">No. El análisis corre fuera de la partida, sobre el replay, así que no compite con el juego por recursos ni por red. Está optimizado para convivir con tus juegos.</p></div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="faq" data-dc-class="fq3" style="background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; overflow: hidden;">
+          <button type="button" class="q" aria-expanded="false" data-dc-attr="aria-expanded:ex3" data-dc-click="tf3" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 14px; text-align: left; cursor: pointer; background: transparent; border: 0; padding: 18px 20px; color: #FFFFFF; font-size: 15px; font-weight: 800; letter-spacing: .2px;"><span>¿Qué hacen con mis datos?</span><span class="chev" style="flex-shrink: 0; color: #8C929B; font-size: 14px;">▼</span></button>
+          <div class="ans"><p style="margin: 0; padding: 0 20px 18px; font-size: 14px; line-height: 1.6; color: #C9CED6;">No capturamos tus datos. Tus replays se analizan para darte tu diagnóstico y tu ruta; nada más.</p></div>
+        </div>
+        <div class="faq" data-dc-class="fq4" style="background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; overflow: hidden;">
+          <button type="button" class="q" aria-expanded="false" data-dc-attr="aria-expanded:ex4" data-dc-click="tf4" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 14px; text-align: left; cursor: pointer; background: transparent; border: 0; padding: 18px 20px; color: #FFFFFF; font-size: 15px; font-weight: 800; letter-spacing: .2px;"><span>¿Cuánto tarda en darme resultados?</span><span class="chev" style="flex-shrink: 0; color: #8C929B; font-size: 14px;">▼</span></button>
+          <div class="ans"><p style="margin: 0; padding: 0 20px 18px; font-size: 14px; line-height: 1.6; color: #C9CED6;">Minutos. Eliges hasta 5 replays; Legends extrae +50 métricas, detecta tu rol, compara con tu rango y te entrega tu diagnóstico con la ruta de la semana.</p></div>
+        </div>
+        <div class="faq" data-dc-class="fq5" style="background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; overflow: hidden;">
+          <button type="button" class="q" aria-expanded="false" data-dc-attr="aria-expanded:ex5" data-dc-click="tf5" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 14px; text-align: left; cursor: pointer; background: transparent; border: 0; padding: 18px 20px; color: #FFFFFF; font-size: 15px; font-weight: 800; letter-spacing: .2px;"><span>¿Para qué juegos sirve?</span><span class="chev" style="flex-shrink: 0; color: #8C929B; font-size: 14px;">▼</span></button>
+          <div class="ans"><p style="margin: 0; padding: 0 20px 18px; font-size: 14px; line-height: 1.6; color: #C9CED6;">Hoy, Dota 2. League of Legends está en desarrollo; Fortnite y Deadlock vienen después.</p></div>
+        </div>
+        <div class="faq" data-dc-class="fq6" style="background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; overflow: hidden;">
+          <button type="button" class="q" aria-expanded="false" data-dc-attr="aria-expanded:ex6" data-dc-click="tf6" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 14px; text-align: left; cursor: pointer; background: transparent; border: 0; padding: 18px 20px; color: #FFFFFF; font-size: 15px; font-weight: 800; letter-spacing: .2px;"><span>¿Y si cambio de rol o de héroe?</span><span class="chev" style="flex-shrink: 0; color: #8C929B; font-size: 14px;">▼</span></button>
+          <div class="ans"><p style="margin: 0; padding: 0 20px 18px; font-size: 14px; line-height: 1.6; color: #C9CED6;">Legends detecta tu posición por lane en cada replay y recalcula los 3 KPIs y sus pesos según el rol. Y puedes recalibrar cuando quieras desde tu perfil.</p></div>
+        </div>
+        <div class="faq" data-dc-class="fq7" style="background: #13171B; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; overflow: hidden;">
+          <button type="button" class="q" aria-expanded="false" data-dc-attr="aria-expanded:ex7" data-dc-click="tf7" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 14px; text-align: left; cursor: pointer; background: transparent; border: 0; padding: 18px 20px; color: #FFFFFF; font-size: 15px; font-weight: 800; letter-spacing: .2px;"><span>¿En qué sistema funciona?</span><span class="chev" style="flex-shrink: 0; color: #8C929B; font-size: 14px;">▼</span></button>
+          <div class="ans"><p style="margin: 0; padding: 0 20px 18px; font-size: 14px; line-height: 1.6; color: #C9CED6;">Por ahora, Windows. Legends escanea tu carpeta de replays de Dota 2 automáticamente o cargas los .dem a mano.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 7 · CIERRE ===== -->
+<section id="descargar" class="sec" style="position: relative; overflow: hidden; padding: 96px 40px; background: #0F1216;">
+  <div class="w-cta" aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 44%; height: 100%; background: #52E000; clip-path: polygon(0 0, 100% 0, 64% 100%, 0 100%); pointer-events: none;"></div>
+  <div class="w-cta-br" aria-hidden="true" style="position: absolute; right: 0; bottom: 0; width: 18%; height: min(30%, 220px); background: #52E000; clip-path: polygon(100% 0, 100% 100%, 0 100%); pointer-events: none;"></div>
+  <div class="cta-grid rv" style="position: relative; width: 100%; max-width: 1280px; margin: 0 auto; background: #13171B; border: 1px solid rgba(82,224,0,.5); border-radius: 18px; overflow: hidden; display: grid; grid-template-columns: 1.2fr .8fr; box-shadow: 0 40px 90px rgba(0,0,0,.6);">
+    <div class="cta-text" style="padding: 56px; display: flex; flex-direction: column; gap: 20px;">
+      <span style="font-size: 11px; font-weight: 800; letter-spacing: 2.4px; text-transform: uppercase; color: #52E000;">Último paso · gratis · Windows</span>
+      <h2 class="h2" style="margin: 0; font-size: 46px; line-height: 1.02; font-weight: 900; letter-spacing: -.5px; text-transform: uppercase; color: #FFFFFF;">Tu ruta te espera.</h2>
+      <p class="lead" style="margin: 0; font-size: 16px; line-height: 1.6; color: #C9CED6;">Descarga Legends, conecta tu Steam y sube tus primeros replays. En minutos tienes tu diagnóstico, tus 3 brechas y tu primer desafío de la semana.</p>
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start;">
+        <a class="btn-p pulse cta-main" href="#" style="display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 18px 30px; border-radius: 10px; background: #52E000; color: #0C0E11; font-size: 14px; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; white-space: nowrap;">Descargar gratis para Windows ▸</a>
+        <span style="font-size: 10px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: #8C929B;">Sin formularios · sin tarjeta · sin Pay to Win</span>
+      </div>
+      <div class="cta-chips" style="display: flex; flex-wrap: wrap; gap: 9px;">
+        <span style="padding: 8px 11px; border-radius: 10px; background: #0C0E11; border: 1px solid rgba(255,255,255,.15); font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">✓ Gratis y sin trampas</span>
+        <span style="padding: 8px 11px; border-radius: 10px; background: #0C0E11; border: 1px solid rgba(255,255,255,.15); font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">0 FPS perdidos</span>
+        <span style="padding: 8px 11px; border-radius: 10px; background: #0C0E11; border: 1px solid rgba(255,255,255,.15); font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">No capturamos tus datos</span>
+        <span style="padding: 8px 11px; border-radius: 10px; background: #0C0E11; border: 1px solid rgba(255,255,255,.15); font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #FFFFFF;">Seguridad 100 %</span>
+      </div>
+    </div>
+    <div class="cta-art" style="position: relative; min-height: 420px; background: #0C0E11; overflow: hidden;">
+      <div aria-hidden="true" style="position: absolute; left: 50%; top: 56%; width: 360px; height: 360px; transform: translate(-50%, -50%); border-radius: 999px; background: radial-gradient(circle, rgba(82,224,0,.4) 0%, rgba(82,224,0,0) 70%); pointer-events: none;"></div>
+      <span style="position: absolute; z-index: 2; left: 50%; top: 20px; transform: translateX(-50%); padding: 9px 12px; border-radius: 10px; background: #13171B; border: 1px solid rgba(82,224,0,.5); font-size: 10px; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: #6EF21C; white-space: nowrap;">Watata · ¡Vamos a por esa racha!</span>
+      <img class="cta-watata wpop" src="../assets/watata-senala.webp" alt="Watata señalándote: tu ruta te espera" style="position: absolute; left: 50%; bottom: -4px; transform: translateX(-50%); height: 380px; width: auto; display: block; filter: drop-shadow(0 20px 30px rgba(0,0,0,.6));">
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER limpio · marca, redes y legal (sin menú de escape) ===== -->
+<footer style="position: relative; padding: 36px 40px; background: #0C0E11; border-top: 1px solid rgba(255,255,255,.08);">
+  <div style="width: 100%; max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px;">
+    <div class="foot" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <img src="../assets/legends-logo.png" alt="" style="width: 36px; height: 36px; display: block;">
+        <span style="display: flex; flex-direction: column;"><span style="font-size: 14px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: #FFFFFF;">Legends</span><span style="font-size: 9px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: #52E000;">Tu Coach AI Personal</span></span>
+      </div>
+      <div class="social" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+        <span style="font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #8C929B; margin-right: 4px;">Síguenos</span>
+        <a class="chip" href="https://www.tiktok.com/@legends.dsv" target="_blank" rel="noopener noreferrer" aria-label="Legends en TikTok, @legends.dsv" title="@legends.dsv" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 14px; border-radius: 999px; background: #13171B; border: 1px solid rgba(255,255,255,.15); color: #FFFFFF; font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#52E000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>TikTok</a>
+        <a class="chip" href="https://www.youtube.com/@Legendsdsv" target="_blank" rel="noopener noreferrer" aria-label="Legends en YouTube, @Legendsdsv" title="@Legendsdsv" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 14px; border-radius: 999px; background: #13171B; border: 1px solid rgba(255,255,255,.15); color: #FFFFFF; font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#52E000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M10 8l6 4-6 4z"></path></svg>YouTube</a>
+        <a class="chip" href="https://www.instagram.com/legends.dsv" target="_blank" rel="noopener noreferrer" aria-label="Legends en Instagram, @legends.dsv" title="@legends.dsv" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 14px; border-radius: 999px; background: #13171B; border: 1px solid rgba(255,255,255,.15); color: #FFFFFF; font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#52E000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2l2-2h6l2 2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><circle cx="12" cy="13" r="3.5"></circle></svg>Instagram</a>
+      </div>
+    </div>
+    <span style="font-size: 11px; line-height: 1.5; color: #8C929B;">© 2026 Legends. Dota 2 y Deadlock son marcas de Valve Corporation; League of Legends de Riot Games; Fortnite de Epic Games. Legends no está afiliado a ninguna de ellas. <a href="#" style="color: #8C929B; text-decoration: underline;">Privacidad</a> · <a href="#" style="color: #8C929B; text-decoration: underline;">Términos</a></span>
+  </div>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+  // Minimal stand-in for the Design runtime: state + re-apply of renderVals() to data-dc-* bindings.
+  window.DCLogic = class DCLogic {
+    constructor(props) { this.props = props || {}; this.state = {}; }
+    setState(s, cb) {
+      if (typeof s === 'function') s = s(this.state);
+      Object.assign(this.state, s || {});
+      if (this._applyBindings) this._applyBindings();
+      if (cb) cb();
+    }
+    forceUpdate() { if (this._applyBindings) this._applyBindings(); }
+  };
+})();
+</script>
+<script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { mounted: false, roleIdx: 0, step: 0, paused: false, mmr: 1200, done: false, faq: 0, sound: false };
+    this._soundOn = false;
+    this._heroVisible = true;
+    this._timers = [];
+    this._raf = 0;
+    this._running = false;
+  }
+
+  componentDidMount() {
+    var self = this;
+    var root = document.getElementById('lg');
+    this._root = root;
+    var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    this._reduce = reduce;
+    var pref = null;
+    try { pref = localStorage.getItem('lg-sound'); } catch (e) { pref = null; }
+    var soundOn = pref === '1' || (pref === null && !!this.props.soundDefault);
+    this._soundOn = soundOn;
+    this.setState({ mounted: true, mmr: reduce ? 1200 : 0, sound: soundOn });
+    if (!root) return;
+
+    this._onFirstGesture = function () {
+      if (self._soundOn && self.initAudio()) { self.resumeAudio(); self.updateAmbient(); }
+    };
+    window.addEventListener('pointerdown', this._onFirstGesture, { passive: true });
+    this._onOver = function (e) {
+      if (!self._soundOn || !e.target || !e.target.closest) return;
+      var t = e.target.closest('.btn-p, .card, .faq .q, .step, .tile, .chip, .stat, .snd');
+      if (!t) return;
+      if (e.relatedTarget && t.contains(e.relatedTarget)) return;
+      self.sfx('hover');
+    };
+    root.addEventListener('mouseover', this._onOver);
+    this._onClick = function (e) {
+      if (!self._soundOn || !e.target || !e.target.closest) return;
+      if (e.target.closest('.btn-p')) self.sfx('click');
+    };
+    root.addEventListener('click', this._onClick);
+
+    var rvs = Array.prototype.slice.call(root.querySelectorAll('.rv, .rv-x'));
+    var reveal = function (el) {
+      el.classList.add('in');
+      if (el.hasAttribute('data-count')) self.countUp();
+      if (el.classList.contains('sec-head')) self.sfx('rise');
+    };
+    if ('IntersectionObserver' in window) {
+      this._io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting || e.intersectionRatio > 0) { reveal(e.target); self._io.unobserve(e.target); }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -5% 0px' });
+      rvs.forEach(function (el) { self._io.observe(el); });
+      this._timers.push(setTimeout(function () {
+        var vh = window.innerHeight || 900;
+        rvs.forEach(function (el) {
+          if (el.classList.contains('in')) return;
+          var r = el.getBoundingClientRect();
+          if (r.top < vh + 120) reveal(el);
+        });
+      }, 7000));
+    } else {
+      rvs.forEach(reveal);
+    }
+
+    if (!reduce) {
+      this._timers.push(setInterval(function () {
+        self.setState(function (s) { return { roleIdx: (s.roleIdx + 1) % 4 }; });
+      }, 2600));
+    }
+    this._timers.push(setInterval(function () {
+      var auto = self.props.autoAdvance === undefined ? true : !!self.props.autoAdvance;
+      if (auto && !self.state.paused && !reduce) self.setState(function (s) { return { step: (s.step + 1) % 3 }; });
+    }, 5200));
+
+    var pend = null;
+    this._onMove = function (e) {
+      pend = e;
+      if (self._mvRaf) return;
+      self._mvRaf = requestAnimationFrame(function () {
+        self._mvRaf = 0;
+        var vw = window.innerWidth || 1440, vh = window.innerHeight || 900;
+        var mx = Math.max(-1, Math.min(1, (pend.clientX / vw - 0.5) * 2));
+        var my = Math.max(-1, Math.min(1, (pend.clientY / vh - 0.5) * 2));
+        root.style.setProperty('--mx', mx.toFixed(3));
+        root.style.setProperty('--my', my.toFixed(3));
+      });
+    };
+    this._onScroll = function () {
+      if (self._scRaf) return;
+      self._scRaf = requestAnimationFrame(function () {
+        self._scRaf = 0;
+        var y = window.scrollY || window.pageYOffset || 0;
+        root.style.setProperty('--sy', String(Math.round(Math.min(y, 1400))));
+      });
+    };
+    if (!reduce) {
+      window.addEventListener('mousemove', this._onMove, { passive: true });
+      window.addEventListener('scroll', this._onScroll, { passive: true });
+    }
+
+    this.initCanvas();
+  }
+
+  componentWillUnmount() {
+    this._timers.forEach(function (t) { clearInterval(t); clearTimeout(t); });
+    if (this._resume) clearTimeout(this._resume);
+    if (this._io) this._io.disconnect();
+    if (this._cio) this._cio.disconnect();
+    if (this._ro) this._ro.disconnect();
+    if (this._cRaf) cancelAnimationFrame(this._cRaf);
+    if (this._mvRaf) cancelAnimationFrame(this._mvRaf);
+    if (this._scRaf) cancelAnimationFrame(this._scRaf);
+    if (this._stopCanvas) this._stopCanvas();
+    if (this._onMove) window.removeEventListener('mousemove', this._onMove);
+    if (this._onScroll) window.removeEventListener('scroll', this._onScroll);
+    if (this._onVis) document.removeEventListener('visibilitychange', this._onVis);
+    if (this._onFirstGesture) window.removeEventListener('pointerdown', this._onFirstGesture);
+    if (this._root && this._onOver) this._root.removeEventListener('mouseover', this._onOver);
+    if (this._root && this._onClick) this._root.removeEventListener('click', this._onClick);
+    this.ambient(false);
+    if (this._ac) { try { this._ac.close(); } catch (e) {} this._ac = null; }
+  }
+
+  countUp() {
+    var self = this;
+    if (this._counted) return;
+    this._counted = true;
+    if (this._reduce) { this.setState({ mmr: 1200 }); return; }
+    var T = 1700, t0 = performance.now();
+    var tick = function (now) {
+      var p = Math.min(1, (now - t0) / T);
+      var e = 1 - Math.pow(1 - p, 3);
+      self.setState({ mmr: Math.round(1200 * e) });
+      if (now - (self._lastTick || 0) > 70 && p < 0.97) { self._lastTick = now; self.sfx('tick'); }
+      if (p >= 1) self.sfx('open');
+      if (p < 1) self._cRaf = requestAnimationFrame(tick);
+    };
+    this._cRaf = requestAnimationFrame(tick);
+  }
+
+  pickStep(i) {
+    var self = this;
+    if (i !== this.state.step) this.sfx('whoosh');
+    this.setState({ step: i, paused: true });
+    if (this._resume) clearTimeout(this._resume);
+    this._resume = setTimeout(function () { self.setState({ paused: false }); }, 15000);
+  }
+
+  toggleFaq(i) {
+    this.sfx(this.state.faq === i ? 'close' : 'open');
+    this.setState(function (s) { return { faq: s.faq === i ? -1 : i }; });
+  }
+
+  complete() {
+    if (this.state.done) return;
+    this.sfx('levelup');
+    this.setState({ done: true });
+  }
+
+  toggleSound() {
+    var next = !this._soundOn;
+    this._soundOn = next;
+    this.setState({ sound: next });
+    try { localStorage.setItem('lg-sound', next ? '1' : '0'); } catch (e) {}
+    if (next) {
+      if (this.initAudio()) { this.resumeAudio(); this.sfx('on'); this.updateAmbient(); }
+    } else {
+      this.ambient(false);
+    }
+  }
+
+  initAudio() {
+    if (this._ac) return true;
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return false;
+    try {
+      this._ac = new AC();
+      this._master = this._ac.createGain();
+      this._master.gain.value = 0.55;
+      this._master.connect(this._ac.destination);
+    } catch (e) { this._ac = null; return false; }
+    return true;
+  }
+
+  resumeAudio() {
+    if (this._ac && this._ac.state === 'suspended') { try { this._ac.resume(); } catch (e) {} }
+  }
+
+  tone(freq, dur, type, gain, t0, slideTo) {
+    var ac = this._ac, o = ac.createOscillator(), g = ac.createGain();
+    o.type = type || 'sine';
+    o.frequency.setValueAtTime(freq, t0);
+    if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, t0 + dur);
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(gain, t0 + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g); g.connect(this._master);
+    o.start(t0); o.stop(t0 + dur + 0.03);
+  }
+
+  noise(dur, gain, t0, fromHz, toHz) {
+    var ac = this._ac, len = Math.max(1, Math.floor(ac.sampleRate * dur));
+    var buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    var src = ac.createBufferSource(); src.buffer = buf;
+    var f = ac.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.1;
+    f.frequency.setValueAtTime(fromHz, t0); f.frequency.exponentialRampToValueAtTime(toHz, t0 + dur);
+    var g = ac.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(gain, t0 + dur * 0.25);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(f); f.connect(g); g.connect(this._master);
+    src.start(t0); src.stop(t0 + dur + 0.03);
+  }
+
+  sfx(name) {
+    if (!this._soundOn || !this._ac || this._ac.state !== 'running') return;
+    var now = performance.now();
+    if (name === 'hover') { if (now - (this._lastHover || 0) < 80) return; this._lastHover = now; }
+    var t = this._ac.currentTime + 0.01;
+    try {
+      switch (name) {
+        case 'hover': this.tone(880, 0.06, 'sine', 0.04, t, 1320); break;
+        case 'click': this.tone(520, 0.05, 'triangle', 0.11, t); this.tone(780, 0.1, 'sine', 0.09, t + 0.04, 1040); break;
+        case 'whoosh': this.noise(0.32, 0.13, t, 300, 2600); this.tone(220, 0.26, 'sine', 0.035, t, 440); break;
+        case 'open': this.tone(600, 0.08, 'sine', 0.08, t, 900); break;
+        case 'close': this.tone(700, 0.08, 'sine', 0.06, t, 420); break;
+        case 'tick': this.tone(1900, 0.02, 'sine', 0.03, t); break;
+        case 'rise': this.tone(180, 0.24, 'sine', 0.03, t, 360); break;
+        case 'on': this.tone(440, 0.1, 'sine', 0.08, t, 660); this.tone(880, 0.2, 'sine', 0.06, t + 0.1, 1320); break;
+        case 'levelup':
+          var notes = [523.25, 659.25, 783.99, 1046.5];
+          for (var i = 0; i < notes.length; i++) this.tone(notes[i], 0.16, 'triangle', 0.1, t + i * 0.09);
+          this.tone(1568, 0.5, 'sine', 0.07, t + 0.4, 2093);
+          this.noise(0.4, 0.05, t + 0.36, 1200, 6000);
+          break;
+      }
+    } catch (e) {}
+  }
+
+  updateAmbient() {
+    this.ambient(this._soundOn && this._heroVisible && !document.hidden);
+  }
+
+  ambient(on) {
+    var ac = this._ac;
+    if (!ac) return;
+    if (on && !this._amb) {
+      try {
+        var g = ac.createGain(); g.gain.value = 0.0001; g.connect(this._master);
+        var f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 240; f.connect(g);
+        var o1 = ac.createOscillator(); o1.type = 'sine'; o1.frequency.value = 55;
+        var o2 = ac.createOscillator(); o2.type = 'sine'; o2.frequency.value = 55.6;
+        var o3 = ac.createOscillator(); o3.type = 'triangle'; o3.frequency.value = 110.4;
+        var lfo = ac.createOscillator(); lfo.frequency.value = 0.11;
+        var lg = ac.createGain(); lg.gain.value = 110; lfo.connect(lg); lg.connect(f.frequency);
+        o1.connect(f); o2.connect(f); o3.connect(f);
+        o1.start(); o2.start(); o3.start(); lfo.start();
+        g.gain.exponentialRampToValueAtTime(0.045, ac.currentTime + 1.6);
+        this._amb = { g: g, nodes: [o1, o2, o3, lfo] };
+      } catch (e) { this._amb = null; }
+    } else if (!on && this._amb) {
+      var a = this._amb; this._amb = null;
+      try {
+        a.g.gain.cancelScheduledValues(ac.currentTime);
+        a.g.gain.setValueAtTime(Math.max(0.0001, a.g.gain.value), ac.currentTime);
+        a.g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + 0.8);
+      } catch (e) {}
+      setTimeout(function () { a.nodes.forEach(function (n) { try { n.stop(); } catch (e) {} }); try { a.g.disconnect(); } catch (e) {} }, 900);
+    }
+  }
+
+  initCanvas() {
+    var self = this;
+    var c = document.getElementById('lgHeroCanvas');
+    if (!c || !c.getContext) return;
+    var ctx = c.getContext('2d');
+    if (!ctx) return;
+    var motion = (this.props.gridMotion === undefined ? true : !!this.props.gridMotion) && !this._reduce;
+    var w = 1, h = 1, dpr = 1;
+    var resize = function () {
+      var r = c.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      w = Math.max(1, Math.round(r.width));
+      h = Math.max(1, Math.round(r.height));
+      c.width = Math.round(w * dpr);
+      c.height = Math.round(h * dpr);
+    };
+    resize();
+    var P = [];
+    for (var i = 0; i < 70; i++) P.push({ x: Math.random(), y: Math.random(), r: 0.5 + Math.random() * 1.5, v: 0.012 + Math.random() * 0.03, ph: Math.random() * 6.283 });
+    var beams = [
+      { x: 0.08, col: '82,224,0', hh: 0.4, ph: 0 },
+      { x: 0.27, col: '245,221,31', hh: 0.24, ph: 1.7 },
+      { x: 0.6, col: '82,224,0', hh: 0.3, ph: 3.1 },
+      { x: 0.83, col: '138,147,240', hh: 0.2, ph: 4.4 },
+      { x: 0.95, col: '82,224,0', hh: 0.34, ph: 2.2 }
+    ];
+    var t0 = performance.now(), lastT = t0;
+    var draw = function (now) {
+      var t = (now - t0) / 1000;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+      var hz = h * 0.56, vx = w * 0.5;
+      var g = ctx.createRadialGradient(vx, hz, 0, vx, hz, w * 0.55);
+      g.addColorStop(0, 'rgba(82,224,0,0.22)');
+      g.addColorStop(0.5, 'rgba(82,224,0,0.06)');
+      g.addColorStop(1, 'rgba(82,224,0,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+      ctx.lineWidth = 1;
+      var N = 16, ph = motion ? (t * 0.22) % 1 : 0.35;
+      for (var i = 0; i < N; i++) {
+        var z = (i + ph) / N;
+        var y = hz + (h - hz) * z * z;
+        var a = 0.04 + 0.42 * z;
+        ctx.strokeStyle = 'rgba(82,224,0,' + a.toFixed(3) + ')';
+        ctx.beginPath(); ctx.moveTo(0, y + 0.5); ctx.lineTo(w, y + 0.5); ctx.stroke();
+      }
+      var V = 16, sp = w * 0.085;
+      for (var k = -V; k <= V; k++) {
+        var av = 0.05 + 0.2 * (1 - Math.abs(k) / V);
+        ctx.strokeStyle = 'rgba(82,224,0,' + av.toFixed(3) + ')';
+        ctx.beginPath(); ctx.moveTo(vx, hz); ctx.lineTo(vx + k * sp * 2.2, h); ctx.stroke();
+      }
+      ctx.strokeStyle = 'rgba(110,242,28,0.5)';
+      ctx.beginPath(); ctx.moveTo(0, hz + 0.5); ctx.lineTo(w, hz + 0.5); ctx.stroke();
+      beams.forEach(function (b) {
+        var bob = motion ? Math.sin(t * 0.7 + b.ph) * 0.03 : 0;
+        var x = b.x * w, top = hz - h * (b.hh + bob), bh = h - top;
+        ctx.fillStyle = 'rgba(' + b.col + ',0.08)'; ctx.fillRect(x - 7, top, 14, bh);
+        ctx.fillStyle = 'rgba(' + b.col + ',0.22)'; ctx.fillRect(x - 2.5, top, 5, bh);
+        ctx.fillStyle = 'rgba(' + b.col + ',0.9)'; ctx.fillRect(x - 0.75, top, 1.5, bh);
+      });
+      var dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
+      P.forEach(function (p) {
+        if (motion) { p.y -= p.v * dt; if (p.y < -0.02) { p.y = 1.02; p.x = Math.random(); } }
+        var ap = 0.25 + 0.55 * (0.5 + 0.5 * Math.sin(t * 1.6 + p.ph));
+        ctx.fillStyle = 'rgba(160,255,90,' + ap.toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(p.x * w, p.y * h, p.r, 0, 6.283); ctx.fill();
+      });
+      g = ctx.createLinearGradient(0, 0, 0, h);
+      g.addColorStop(0, 'rgba(12,14,17,0.8)');
+      g.addColorStop(0.35, 'rgba(12,14,17,0)');
+      g.addColorStop(0.8, 'rgba(12,14,17,0)');
+      g.addColorStop(1, 'rgba(12,14,17,1)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+      if (motion && self._running) self._raf = requestAnimationFrame(draw);
+    };
+    var start = function () {
+      if (self._running) return;
+      self._running = true;
+      lastT = performance.now();
+      if (motion) self._raf = requestAnimationFrame(draw); else draw(performance.now());
+    };
+    var stop = function () {
+      self._running = false;
+      if (self._raf) cancelAnimationFrame(self._raf);
+      self._raf = 0;
+    };
+    this._stopCanvas = stop;
+    if ('ResizeObserver' in window) {
+      this._ro = new ResizeObserver(function () { resize(); if (!motion || !self._running) draw(performance.now()); });
+      this._ro.observe(c);
+    }
+    if ('IntersectionObserver' in window) {
+      this._cio = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { self._heroVisible = e.isIntersecting; if (e.isIntersecting) start(); else stop(); self.updateAmbient(); });
+      }, { threshold: 0 });
+      this._cio.observe(c);
+    } else {
+      start();
+    }
+    this._onVis = function () { if (document.hidden) stop(); else start(); self.updateAmbient(); };
+    document.addEventListener('visibilitychange', this._onVis);
+  }
+
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var fmt = function (n) { return n >= 1000 ? Math.floor(n / 1000) + '.' + ('00' + (n % 1000)).slice(-3) : String(n); };
+    var caps = ['Paso 1 · Descarga y conecta Steam', 'Paso 2 · Elige hasta 5 replays', 'Paso 3 · Tu diagnóstico y tu ruta por rol'];
+    var v = {
+      rootCls: s.mounted ? 'js' : '',
+      mmr: fmt(s.mmr),
+      done: s.done,
+      todo: !s.done,
+      xp: s.done ? 370 : 340,
+      xpW: s.done ? '74%' : '68%',
+      cap: caps[s.step] || caps[0],
+      complete: function () { self.complete(); },
+      sndCls: 'snd' + (s.sound ? ' on' : ''),
+      sndOn: !!s.sound,
+      sndLabel: s.sound ? 'Sonido on' : 'Sonido off',
+      toggleSound: function () { self.toggleSound(); }
+    };
+    for (var i = 0; i < 4; i++) v['ro' + i] = 'role' + (i === s.roleIdx ? ' on' : '');
+    for (var j = 0; j < 3; j++) {
+      v['st' + j] = 'step' + (j === s.step ? ' on' : '');
+      v['sh' + j] = 'shot' + (j === s.step ? ' on' : '');
+      v['pick' + j] = (function (idx) { return function () { self.pickStep(idx); }; })(j);
+    }
+    for (var k = 0; k < 9; k++) {
+      v['fq' + k] = 'faq' + (k === s.faq ? ' open' : '');
+      v['ex' + k] = k === s.faq;
+      v['tf' + k] = (function (idx) { return function () { self.toggleFaq(idx); }; })(k);
+    }
+    return v;
+  }
+}
+</script>
+<script>
+(function () {
+  'use strict';
+  var props = {"autoAdvance": true, "gridMotion": true, "soundDefault": false};
+  var c = new Component(props);
+  var root = document.getElementById('lg');
+  var vals = {};
+  function apply() {
+    vals = c.renderVals();
+    root.querySelectorAll('[data-dc-class]').forEach(function (el) {
+      var k = el.getAttribute('data-dc-class'); var p = el.getAttribute('data-dc-class-prefix') || '';
+      var next = p + (vals[k] || ''); if (el.className !== next) el.className = next;
+    });
+    root.querySelectorAll('[data-dc-text]').forEach(function (el) {
+      var k = el.getAttribute('data-dc-text'); var v = String(vals[k] == null ? '' : vals[k]);
+      if (el.textContent !== v) el.textContent = v;
+    });
+    root.querySelectorAll('[data-dc-attr]').forEach(function (el) {
+      var pair = el.getAttribute('data-dc-attr').split(':'); el.setAttribute(pair[0], String(vals[pair[1]]));
+    });
+    root.querySelectorAll('[data-dc-style]').forEach(function (el) {
+      var pair = el.getAttribute('data-dc-style').split(':'); el.style[pair[0]] = vals[pair[1]];
+    });
+    root.querySelectorAll('[data-dc-if]').forEach(function (el) {
+      el.style.display = vals[el.getAttribute('data-dc-if')] ? 'contents' : 'none';
+    });
+  }
+  c._applyBindings = apply;
+  root.querySelectorAll('[data-dc-click]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      var fn = vals[el.getAttribute('data-dc-click')];
+      if (typeof fn === 'function') fn(e);
+    });
+  });
+  apply();
+  c.componentDidMount();
+  apply();
+  window.__legends = c;
+})();
+</script>
+</body>
+</html>

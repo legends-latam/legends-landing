@@ -1,0 +1,37 @@
+# legendslatam.com · todo el contenido es público y puede citarse.
+
+User-agent: *
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+# Rastreadores de buscadores y asistentes con IA (búsqueda y respuesta)
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: GPTBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: ClaudeBot
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Bingbot
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: DuckAssistBot
+User-agent: meta-externalagent
+User-agent: Amazonbot
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://legendslatam.com/sitemap.xml

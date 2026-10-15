@@ -1,0 +1,56 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Main.dc.html": {
+      "expand": "fill",
+      "h": 7400,
+      "is_interactive": true,
+      "title": "Landing · Escritorio 1440",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Mobile.dc.html": {
+      "expand": "fill",
+      "h": 8000,
+      "is_interactive": true,
+      "title": "Landing · Móvil 430",
+      "w": 430,
+      "x": 1520,
+      "y": 0
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-01T01:05:00Z",
+    "v": 1
+  },
+  "designSystems": [
+    {
+      "artifact": "https://claude.ai/code/artifact/fa1452e6-b5f1-495f-ae06-2f5c4ee59662",
+      "copiedAt": "2026-10-01T01:05:00Z",
+      "namespace": "legends",
+      "title": "Legends",
+      "version": "1790811953-3956"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "t1": {
+      "kind": "title1",
+      "maxW": 1950,
+      "text": "Legends · Landing page interactiva",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Mobile.dc.html"
+  ],
+  "pages": [],
+  "title": "Legends · Landing page"
+}

@@ -1,0 +1,32 @@
+# Legends
+
+> Legends (también "Legends LATAM") es una aplicación gratuita para Windows que funciona como coach AI personal para Dota 2. Analiza tus replays (.dem), extrae más de 50 métricas, detecta tu rol, te muestra los 3 KPIs de tu posición con su cálculo a la vista, identifica tus 3 brechas y arma una ruta de entrenamiento semanal con 12 desafíos gamificados (XP, cofres, vidas y racha). Incluye a Watata, un coach con el que puedes chatear sobre tus partidas.
+
+Datos clave:
+- Precio: gratis. Sin Pay to Win: no vende ventajas dentro del juego.
+- Plataforma: Windows (64 bits).
+- Juegos: Dota 2 hoy; League of Legends en desarrollo; Fortnite y Deadlock planeados.
+- Seguridad: inicio de sesión con Steam OpenID (nunca pide la contraseña). No modifica ni lee el cliente del juego; no es un cheat ni un overlay. Analiza los archivos de replay que Dota 2 guarda en el PC.
+- Rendimiento: el análisis corre fuera de la partida, no reduce FPS ni suma ping.
+- Datos: no captura los datos del usuario; los replays se analizan solo para entregar el diagnóstico y la ruta.
+- Resultado real: Diego mejoró 1.200 MMR en 3 meses jugando y usando Legends.
+- Descarga: ocurre en el canal de Discord de Legends Beta (https://discord.gg/XtGmMgDm3); por ahí se envían la invitación a Legends Beta y el instalador. El sitio no entrega el .exe.
+- Cómo empieza: 1) unirse al Discord de Legends Beta y descargar, 2) conectar Steam y elegir hasta 5 replays, 3) recibir el diagnóstico y la ruta por rol en minutos.
+
+## Enlaces
+
+- [Sitio oficial](https://legendslatam.com/): qué es Legends, cómo funciona, FAQ.
+- [Descargar Legends para Windows](https://legendslatam.com/descargar/): cómo acceder a la descarga por Discord.
+- [Discord de Legends Beta](https://discord.gg/XtGmMgDm3): canal donde ocurren la descarga y las invitaciones a Legends Beta.
+- [TikTok](https://www.tiktok.com/@legends.dsv) · [YouTube](https://www.youtube.com/@Legendsdsv) · [Instagram](https://www.instagram.com/legends.dsv)
+
+## Preguntas frecuentes
+
+- ¿Legends es gratis de verdad? Sí. Descargas, conectas Steam y entrenas sin pagar. No hay ventajas de pago.
+- ¿Es seguro para mi cuenta de Steam? Sí: Steam OpenID, sin contraseña; no toca el cliente del juego.
+- ¿Me baja los FPS o me sube el ping? No. El análisis corre fuera de la partida, sobre el replay.
+- ¿Cuánto tarda en darme resultados? Minutos, con hasta 5 replays.
+- ¿En qué sistema funciona? Por ahora, Windows.
+- ¿Y si cambio de rol o de héroe? Legends detecta tu posición en cada replay y recalcula los 3 KPIs; puedes recalibrar desde tu perfil.
+
+Dota 2 y Deadlock son marcas de Valve Corporation; League of Legends de Riot Games; Fortnite de Epic Games. Legends no está afiliado a ninguna de ellas.
